@@ -2,26 +2,11 @@ export function TumbleweedIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      viewBox="0 0 256 256"
+      fill="currentColor"
       {...props}
     >
-      <path d="M12 12c0-2.21-1.79-4-4-4s-4 1.79-4 4 1.79 4 4 4" />
-      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4" />
-      <path d="M12 12c0 2.21 1.79 4 4 4s4-1.79 4-4" />
-      <path d="M12 12c-2.21 0-4 1.79-4 4s1.79 4 4 4" />
-      <path d="M12 12c2.21 0 4 1.79 4 4" />
-      <path d="M12 12c-2.21 0-4-1.79-4-4" />
-      <path d="M12 12c0-2.21-1.79-4-4-4" />
-      <path d="M12 12c2.21 0 4-1.79 4-4" />
-      <path d="M12 12c0 2.21 1.79 4 4 4" />
-      <path d="M12 12c-2.21 0-4 1.79-4 4" />
-      <path d="M15.536 8.464a4 4 0 1 0-5.657 5.657" />
-      <path d="M8.464 8.464a4 4 0 1 1 5.657 5.657" />
+      <path d="M224.94,141.66A95.73,95.73,0,0,0,138.3,47.06a96,96,0,1,0-91.24,91.24,95.73,95.73,0,0,0,91.24,91.24,96,96,0,0,0,86.6-141.6A95.45,95.45,0,0,0,224.94,141.66ZM128,208A80,80,0,1,1,208,128,80.09,80.09,0,0,1,128,208Z" />
     </svg>
   );
 }

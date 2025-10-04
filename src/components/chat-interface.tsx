@@ -87,7 +87,6 @@ export function ChatInterface({
 
       // Add an empty message for the bot to start typing into
       setMessages((prev) => [...prev, { id: botMessageId, sender: "bot", text: "" }]);
-      setIsBotTyping(false);
       
       let currentWordIndex = 0;
       
@@ -103,6 +102,8 @@ export function ChatInterface({
               );
               currentWordIndex++;
               setTimeout(typeWord, chatConfig.animationSpeed);
+          } else {
+             setIsBotTyping(false);
           }
       }
       

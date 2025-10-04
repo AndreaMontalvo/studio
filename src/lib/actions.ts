@@ -196,18 +196,15 @@ export async function getAiResponse(
 export async function streamAiResponse(
   chatId: string,
   currentMessages: ChatMessage[]
-) {
-  'use server';
-
+): Promise<ChatMessage> {
   const chatConfig = await getChatById(chatId);
   if (!chatConfig) {
     throw new Error('Chat configuration not found.');
   }
 
-  // Filter out any potential empty messages or system messages if needed
-  const historyForAi = currentMessages.filter(
-    m => m.sender === 'user' || m.sender === 'bot'
-  );
+  const historyForAi = currentMessages
+    .filter(m => m.sender === 'user' || m.sender === 'bot')
+    .map(m => ({sender: m.sender, text: m.text}));
 
   const responseText = await getAiResponse(chatConfig, historyForAi);
 

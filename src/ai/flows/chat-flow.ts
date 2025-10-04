@@ -1,7 +1,6 @@
 'use server';
 
 import {ai} from '@/ai/genkit';
-import {ChatConfig, ChatMessage} from '@/lib/types';
 import {z} from 'zod';
 
 const ChatRequestSchema = z.object({
@@ -32,7 +31,7 @@ export const generateResponse = ai.defineFlow(
     }));
 
     const {output} = await ai.generate({
-      model: 'googleai/gemini-2.5-flash',
+      model: 'googleai/gemini-1.5-flash',
       prompt: `Please continue the conversation. The user's preferred language is ${chatConfig.language}.`,
       system: chatConfig.persistentPrompt,
       history: llmHistory,

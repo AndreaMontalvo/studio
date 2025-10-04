@@ -8,10 +8,11 @@ import { simulatedResponsesEs } from "@/lib/simulated-responses-es";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Send, Home } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { TypingAnimation } from "./typing-animation";
+import Link from "next/link";
 
 interface ChatMessage {
     id: string;
@@ -133,30 +134,44 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
                 </div>
             </ScrollArea>
             <div className="p-4 border-t bg-background/50 rounded-b-lg">
-                <form onSubmit={handleSendMessage} className="flex items-start gap-2">
-                    <Textarea
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        placeholder={isChatEnded ? "Conversation has ended." : "Type your message..."}
-                        className="flex-1 resize-none"
-                        maxLength={chatConfig.characterLimit}
-                        disabled={isBotTyping || isChatEnded}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault();
-                                handleSendMessage(e);
-                            }
-                        }}
-                        rows={1}
-                    />
-                    <Button type="submit" size="icon" disabled={isBotTyping || isChatEnded || !userInput.trim()}>
-                        <Send />
-                        <span className="sr-only">Send</span>
-                    </Button>
-                </form>
-                <p className="text-xs text-muted-foreground mt-2 text-right">
-                    {userInput.length} / {chatConfig.characterLimit} | Messages: {messagesSent} / {chatConfig.messageLimit}
-                </p>
+              {isChatEnded ? (
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <p className="text-sm text-muted-foreground">Conversation has ended.</p>
+                  <Button asChild>
+                    <Link href="/">
+                      <Home className="mr-2" />
+                      Return to Chat List
+                    </Link>
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <form onSubmit={handleSendMessage} className="flex items-start gap-2">
+                      <Textarea
+                          value={userInput}
+                          onChange={(e) => setUserInput(e.target.value)}
+                          placeholder={"Type your message..."}
+                          className="flex-1 resize-none"
+                          maxLength={chatConfig.characterLimit}
+                          disabled={isBotTyping}
+                          onKeyDown={(e) => {
+                              if (e.key === 'Enter' && !e.shiftKey) {
+                                  e.preventDefault();
+                                  handleSendMessage(e);
+                              }
+                          }}
+                          rows={1}
+                      />
+                      <Button type="submit" size="icon" disabled={isBotTyping || !userInput.trim()}>
+                          <Send />
+                          <span className="sr-only">Send</span>
+                      </Button>
+                  </form>
+                  <p className="text-xs text-muted-foreground mt-2 text-right">
+                      {userInput.length} / {chatConfig.characterLimit} | Messages: {messagesSent} / {chatConfig.messageLimit}
+                  </p>
+                </>
+              )}
             </div>
         </div>
     );

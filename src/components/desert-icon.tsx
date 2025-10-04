@@ -10,13 +10,15 @@ export function DesertIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <path d="M20 18c-2.4 0-4.6-1-6.2-2.8c-1.5-1.7-2.8-3.8-4.2-6.2c-1.3-2.2-2-4-2.6-5.4" />
-      <path d="M16 18c-2.4 0-4.6-1-6.2-2.8c-1.5-1.7-2.8-3.8-4.2-6.2C4.3 6.8 4.2 4.1 4 2" />
-      <path d="M12 18c-2.4 0-4.6-1-6.2-2.8c-1.5-1.7-2.8-3.8-4.2-6.2" />
-      <path d="M2 12h2" />
-      <path d="M10 6V4" />
-      <path d="M18 10V8" />
-      <circle cx="12" cy="4" r="2" />
+      <path d="M19 9l-2-2" />
+      <path d="M17 11l2-2" />
+      <path d="M14 13.04V18a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-1.1" />
+      <path d="M16.5 13H14" />
+      <path d="M11 14v-4.5" />
+      <path d="M8 14v-1.5" />
+      <path d="M11 9.5a2.5 2.5 0 1 1-5 0" />
+      <path d="M22 22H2" />
+      <path d="M13.5 9a.5.5 0 0 0-1 0V11a.5.5 0 0 0 1 0" />
     </svg>
   );
 }

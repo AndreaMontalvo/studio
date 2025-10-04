@@ -5,12 +5,10 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { ChatCard } from "@/components/chat-card";
 import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { TumbleweedIcon } from "@/components/tumbleweed-icon";
 
 export default async function Home() {
   const chats = await getChats();
-  const emptyStateImage = PlaceHolderImages.find(img => img.id === 'empty-state');
 
   return (
     <div className="flex flex-col w-full">
@@ -35,17 +33,7 @@ export default async function Home() {
         ) : (
           <Card className="w-full border-dashed">
             <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-              {emptyStateImage && (
-                  <Image
-                    src={emptyStateImage.imageUrl}
-                    alt={emptyStateImage.description}
-                    width={500}
-                    height={400}
-                    className="mb-6 rounded-lg object-contain max-w-sm w-full h-auto"
-                    data-ai-hint={emptyStateImage.imageHint}
-                    priority
-                  />
-              )}
+              <TumbleweedIcon className="w-24 h-24 text-muted-foreground mb-6" />
               <h2 className="text-2xl font-headline font-semibold mb-2">No Chats Found</h2>
               <p className="text-muted-foreground mb-6">Get started by creating your first chat configuration.</p>
               <Button asChild size="lg">

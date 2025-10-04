@@ -1,0 +1,27 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "aaaa"
+  },
+  {
+    "id": "585edbbd-0a40-4ac0-9c68-edbe1536a30a",
+    "sender": "user",
+    "text": "aaaafff??"
+  },
+  {
+    "id": "932f1675-ee2d-445d-96eb-d24c8d602c3f",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  },
+  {
+    "id": "36ad6e25-bba4-44b0-ad0f-8189099551cd",
+    "sender": "user",
+    "text": "pero que pasaaaaaaaaaaaaaaaaaaaaasffdf"
+  },
+  {
+    "id": "849cfc25-863d-466c-9819-9dd2856fcebe",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  }
+]

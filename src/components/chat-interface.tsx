@@ -81,39 +81,47 @@ export function ChatInterface({
 
     startTransition(async () => {
       const botResponse = await streamAiResponse(chatConfig.id, newMessages);
-      
+
       const words = botResponse.text.split(/\s+/);
       const botMessageId = botResponse.id;
 
       // Add an empty message for the bot to start typing into
-      setMessages((prev) => [...prev, { id: botMessageId, sender: "bot", text: "" }]);
-      
+      setMessages(prev => [...prev, {id: botMessageId, sender: 'bot', text: ''}]);
+
       let currentWordIndex = 0;
-      
+
       function typeWord() {
-          if (currentWordIndex < words.length) {
-              const nextWord = words[currentWordIndex];
-              setMessages((prev) =>
-                  prev.map((msg) =>
-                      msg.id === botMessageId
-                          ? { ...msg, text: msg.text ? `${msg.text} ${nextWord}` : nextWord }
-                          : msg
-                  )
-              );
-              currentWordIndex++;
-              setTimeout(typeWord, chatConfig.animationSpeed);
-          } else {
-             setIsBotTyping(false);
+        if (currentWordIndex < words.length) {
+          const nextWord = words[currentWordIndex];
+          setMessages(prev =>
+            prev.map(msg =>
+              msg.id === botMessageId
+                ? {...msg, text: msg.text ? `${msg.text} ${nextWord}` : nextWord}
+                : msg
+            )
+          );
+          currentWordIndex++;
+          setTimeout(typeWord, chatConfig.animationSpeed);
+        } else {
+          // After typing is done, update the history with the full message
+          setMessages(prev =>
+            prev.map(msg =>
+              msg.id === botMessageId ? {...msg, text: botResponse.text} : msg
+            )
+          );
+          setIsBotTyping(false);
+
+          const userMessagesCount = newMessages.filter(m => m.sender === 'user').length;
+          if (userMessagesCount >= chatConfig.messageLimit) {
+            setMessages(prev => [
+              ...prev,
+              {id: crypto.randomUUID(), sender: 'bot', text: chatConfig.finalMessage},
+            ]);
           }
+        }
       }
       
-      typeWord();
-
-      const userMessagesCount = newMessages.filter(m => m.sender === 'user').length;
-      if (userMessagesCount >= chatConfig.messageLimit) {
-        setMessages(prev => [...prev, { id: crypto.randomUUID(), sender: 'bot', text: chatConfig.finalMessage }]);
-      }
-
+      setTimeout(typeWord, chatConfig.animationSpeed);
     });
   };
 
@@ -135,7 +143,7 @@ export function ChatInterface({
       </div>
       <ScrollArea className="flex-1" viewportRef={scrollAreaViewportRef}>
         <div className="p-4 space-y-6">
-          {messages.map((msg, index) => (
+          {messages.map(msg => (
             <div
               key={msg.id}
               className={cn(

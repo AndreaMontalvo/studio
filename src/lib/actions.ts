@@ -185,7 +185,17 @@ export async function getAiResponse(
 ) {
   'use server';
   try {
-    const response = await generateResponse({chatConfig, history});
+    const historyForAi = history
+      .filter(m => m.sender === 'user' || m.sender === 'bot')
+      .map(m => ({sender: m.sender, text: m.text}));
+
+    const response = await generateResponse({
+      chatConfig: {
+        persistentPrompt: chatConfig.persistentPrompt,
+        language: chatConfig.language,
+      },
+      history: historyForAi,
+    });
     return response.text;
   } catch (e) {
     console.error('Error getting AI response:', e);
@@ -202,11 +212,7 @@ export async function streamAiResponse(
     throw new Error('Chat configuration not found.');
   }
 
-  const historyForAi = currentMessages
-    .filter(m => m.sender === 'user' || m.sender === 'bot')
-    .map(m => ({sender: m.sender, text: m.text}));
-
-  const responseText = await getAiResponse(chatConfig, historyForAi);
+  const responseText = await getAiResponse(chatConfig, currentMessages);
 
   const newBotMessage: ChatMessage = {
     id: crypto.randomUUID(),

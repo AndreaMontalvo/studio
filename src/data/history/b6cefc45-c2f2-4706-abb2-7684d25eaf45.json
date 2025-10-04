@@ -1,0 +1,47 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "Welcome! How can I help you today?"
+  },
+  {
+    "id": "5f7e0f6b-381b-48dc-8603-d82b94f409ac",
+    "sender": "user",
+    "text": "afsasf"
+  },
+  {
+    "id": "808d7cb3-711d-4ee7-ac0d-6cbfd0fad696",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  },
+  {
+    "id": "bdb0b4a9-9b8f-4b4c-bdc7-ae864c345540",
+    "sender": "user",
+    "text": "dddd"
+  },
+  {
+    "id": "cd0222a6-419e-4c7e-af71-af0fb0f609e7",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  },
+  {
+    "id": "ae3eb369-f512-4d48-983d-f75d92931d98",
+    "sender": "user",
+    "text": "fffff"
+  },
+  {
+    "id": "915ee9d7-c8f9-4200-ada8-e9861d3681dd",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  },
+  {
+    "id": "8631d63c-364d-4c8d-8515-0f647788d423",
+    "sender": "user",
+    "text": "Where is the error"
+  },
+  {
+    "id": "6b0b45df-4efc-40a6-93b3-462549d40897",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  }
+]

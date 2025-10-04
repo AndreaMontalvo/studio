@@ -30,8 +30,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { MoreVertical, Bot, Edit, Copy, Trash2 } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { deleteChat, duplicateChat } from "@/lib/actions";
 
 interface ChatCardProps {
@@ -40,9 +38,6 @@ interface ChatCardProps {
 }
 
 export function ChatCard({ chat, index }: ChatCardProps) {
-  const cardImages = PlaceHolderImages.filter(img => img.id.startsWith('card-'));
-  const placeholderImage = cardImages.length > 0 ? cardImages[index % cardImages.length] : undefined;
-
   return (
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
       <CardHeader>
@@ -116,18 +111,7 @@ export function ChatCard({ chat, index }: ChatCardProps) {
         </div>
       </CardHeader>
       <CardContent className="flex-grow">
-        {placeholderImage && (
-          <div className="aspect-[4/3] overflow-hidden rounded-lg">
-            <Image
-              src={placeholderImage.imageUrl}
-              alt={placeholderImage.description}
-              width={400}
-              height={300}
-              className="h-full w-full object-cover transition-transform group-hover:scale-105"
-              data-ai-hint={placeholderImage.imageHint}
-            />
-          </div>
-        )}
+        <p className="text-sm text-muted-foreground line-clamp-3">{chat.persistentPrompt}</p>
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">

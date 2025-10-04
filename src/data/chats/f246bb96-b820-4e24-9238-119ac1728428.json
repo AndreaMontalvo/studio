@@ -1,0 +1,13 @@
+{
+  "id": "f246bb96-b820-4e24-9238-119ac1728428",
+  "name": "My tiny bot",
+  "persistentPrompt": "You are a helpful and friendly assistant.",
+  "welcomeMessage": "Welcome! How can I help you today?",
+  "finalMessage": "Thank you for chatting. The conversation has now ended.",
+  "waitingMessage": "Please wait while I formulate a response...",
+  "messageLimit": 30,
+  "characterLimit": 280,
+  "animationSpeed": 50,
+  "language": "es",
+  "createdAt": "2025-10-04T22:33:42.454Z"
+}

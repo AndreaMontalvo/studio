@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { ChatConfig } from "@/lib/types";
 import { simulatedResponses } from "@/lib/simulated-responses";
+import { simulatedResponsesEs } from "@/lib/simulated-responses-es";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -63,7 +64,8 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
                 return;
             }
 
-            const botResponseText = simulatedResponses[Math.floor(Math.random() * simulatedResponses.length)];
+            const responses = chatConfig.language === 'es' ? simulatedResponsesEs : simulatedResponses;
+            const botResponseText = responses[Math.floor(Math.random() * responses.length)];
             const words = botResponseText.split(/\s+/);
             const botMessageId = crypto.randomUUID();
 

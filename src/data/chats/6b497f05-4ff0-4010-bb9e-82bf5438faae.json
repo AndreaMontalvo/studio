@@ -1,0 +1,13 @@
+{
+  "id": "6b497f05-4ff0-4010-bb9e-82bf5438faae",
+  "name": "ssssss",
+  "persistentPrompt": "no",
+  "welcomeMessage": "Welcome! How can I help you today?sss",
+  "finalMessage": "Thank you for chatting. The conversation hassss now ended.",
+  "waitingMessage": "Please wait sswhile I formulate a response...",
+  "messageLimit": 10,
+  "characterLimit": 280,
+  "animationSpeed": 0,
+  "language": "en",
+  "createdAt": "2025-10-04T23:35:08.772Z"
+}

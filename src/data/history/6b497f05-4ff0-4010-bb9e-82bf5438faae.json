@@ -1,0 +1,27 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "Welcome! How can I help you today?sss"
+  },
+  {
+    "id": "d7f49942-6fa4-422f-a98c-196ce7d73f1a",
+    "sender": "user",
+    "text": "ssssss"
+  },
+  {
+    "id": "20f157ef-2f9c-415a-8776-558abab2afcd",
+    "sender": "bot",
+    "text": "Fascinating. I hadn't considered it from that angle before."
+  },
+  {
+    "id": "20920441-a96a-4feb-aaa0-912ddf287656",
+    "sender": "user",
+    "text": "aaaa"
+  },
+  {
+    "id": "fedb6c14-a949-4b53-86b6-b9df21189836",
+    "sender": "bot",
+    "text": "Okay, building on that, what if we tried a different approach?"
+  }
+]

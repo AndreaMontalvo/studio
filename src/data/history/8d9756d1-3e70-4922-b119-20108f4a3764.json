@@ -1,0 +1,62 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "Grindset"
+  },
+  {
+    "id": "e169c7b9-c8cd-4cf1-9f59-5dd60e8c09f5",
+    "sender": "user",
+    "text": "tststs"
+  },
+  {
+    "id": "0f3e9180-bc06-4231-a6e8-4b78b32c8117",
+    "sender": "bot",
+    "text": "Gracias por compartir. Exploremos eso un poco más."
+  },
+  {
+    "id": "86156a93-bad4-4448-87f3-e23be1a494e7",
+    "sender": "user",
+    "text": "ststs"
+  },
+  {
+    "id": "797789c5-f8a8-4f46-9903-a9a8e00d50c3",
+    "sender": "bot",
+    "text": "Ya veo. ¿Cómo afecta eso a tu perspectiva general?"
+  },
+  {
+    "id": "6c056ebf-7b1f-44ae-87fa-0a0f6d1714f7",
+    "sender": "user",
+    "text": "ssss"
+  },
+  {
+    "id": "16d27e77-b503-4b86-b8e6-bd23d9e9f37b",
+    "sender": "bot",
+    "text": "That's a very interesting point. Could you elaborate on that?"
+  },
+  {
+    "id": "05596027-9fbb-4645-a2da-a6b2bb3b5ef3",
+    "sender": "user",
+    "text": "www"
+  },
+  {
+    "id": "abbdc7d0-974b-46db-93e7-cf08401d99e8",
+    "sender": "bot",
+    "text": "Let me process that for a moment. It's a complex idea."
+  },
+  {
+    "id": "518b2533-cb2a-47cc-b081-281e8813bc28",
+    "sender": "user",
+    "text": "dddd"
+  },
+  {
+    "id": "662c4731-4f91-4c77-a5bc-6356b11fa5d3",
+    "sender": "bot",
+    "text": "I'm not sure I follow completely. Can you rephrase that for me?"
+  },
+  {
+    "id": "b2e050e6-6f10-4114-9c95-9905d0a070a0",
+    "sender": "bot",
+    "text": "not enough"
+  }
+]

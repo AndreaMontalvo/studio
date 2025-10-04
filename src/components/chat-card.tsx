@@ -39,7 +39,7 @@ interface ChatCardProps {
 
 export function ChatCard({ chat, index }: ChatCardProps) {
   return (
-    <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
+    <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 relative">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -110,10 +110,10 @@ export function ChatCard({ chat, index }: ChatCardProps) {
           </DropdownMenu>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="flex-grow pb-20">
         <p className="text-sm text-muted-foreground line-clamp-3">{chat.persistentPrompt}</p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-card to-transparent">
         <Button asChild className="w-full">
           <Link href={`/chats/${chat.id}/run`} target="_blank" rel="noopener noreferrer">
             <Bot className="mr-2" />

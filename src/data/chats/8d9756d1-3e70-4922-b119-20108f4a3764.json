@@ -3,11 +3,11 @@
   "name": "Here we go",
   "persistentPrompt": "You are a gen z assistant",
   "welcomeMessage": "Grindset",
-  "finalMessage": "enough.",
+  "finalMessage": "not enough",
   "waitingMessage": "hold on...",
   "messageLimit": 5,
   "characterLimit": 280,
   "animationSpeed": 170,
-  "language": "es",
+  "language": "en",
   "createdAt": "2025-10-04T22:56:51.544Z"
 }

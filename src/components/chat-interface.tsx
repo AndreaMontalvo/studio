@@ -6,7 +6,7 @@ import type {ChatConfig, ChatMessage} from '@/lib/types';
 import {cn} from '@/lib/utils';
 import {Textarea} from '@/components/ui/textarea';
 import {Button} from '@/components/ui/button';
-import {Send, Home} from 'lucide-react';
+import {Send, Home, ArrowLeft} from 'lucide-react';
 import {ScrollArea} from '@/components/ui/scroll-area';
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {TypingAnimation} from './typing-animation';
@@ -77,11 +77,10 @@ export function ChatInterface({
     const newMessages = [...messages, newUserMessage];
     setMessages(newMessages);
     setUserInput('');
-    setIsBotTyping(true);
 
     startTransition(async () => {
+      setIsBotTyping(true);
       const botResponse = await streamAiResponse(chatConfig.id, newMessages);
-
       const words = botResponse.text.split(/\s+/);
       const botMessageId = botResponse.id;
 
@@ -89,8 +88,8 @@ export function ChatInterface({
       setMessages(prev => [...prev, {id: botMessageId, sender: 'bot', text: ''}]);
 
       let currentWordIndex = 0;
-
-      function typeWord() {
+      
+      const typeWord = () => {
         if (currentWordIndex < words.length) {
           const nextWord = words[currentWordIndex];
           setMessages(prev =>
@@ -120,7 +119,6 @@ export function ChatInterface({
           }
         }
       }
-      
       setTimeout(typeWord, chatConfig.animationSpeed);
     });
   };
@@ -128,6 +126,12 @@ export function ChatInterface({
   return (
     <div className="flex flex-col h-full max-h-[90dvh] w-full max-w-2xl bg-card rounded-lg border shadow-2xl">
       <div className="p-4 border-b flex items-center gap-4">
+        <Button asChild variant="ghost" size="icon" className="md:hidden">
+            <Link href="/">
+                <ArrowLeft />
+                <span className="sr-only">Back to chat list</span>
+            </Link>
+        </Button>
         <Avatar>
           <AvatarFallback>
             {chatConfig.name.charAt(0).toUpperCase()}

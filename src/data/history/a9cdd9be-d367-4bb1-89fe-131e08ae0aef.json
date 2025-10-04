@@ -53,5 +53,35 @@
     "id": "373db87d-9bdf-4ccf-b1e8-c67aecfd2322",
     "sender": "bot",
     "text": "Sorry, I encountered an error."
+  },
+  {
+    "id": "68813eeb-2e21-4c2f-90d4-addf9dc9ec56",
+    "sender": "user",
+    "text": "aaaa"
+  },
+  {
+    "id": "fad2b238-0b0b-4f38-8375-e29193794b31",
+    "sender": "bot",
+    "text": "Vale, partiendo de eso, ¿qué pasaría si probáramos un enfoque diferente?"
+  },
+  {
+    "id": "296549bd-5cdc-4e0b-8e9b-c0638c912f9d",
+    "sender": "user",
+    "text": "exactoooo"
+  },
+  {
+    "id": "9c64eb30-33ea-44f3-8cb4-8f6f633aafc7",
+    "sender": "bot",
+    "text": "Gracias por compartir. Exploremos eso un poco más."
+  },
+  {
+    "id": "f7ddca8c-881e-4a1a-8687-02c9eeca761d",
+    "sender": "user",
+    "text": "sss"
+  },
+  {
+    "id": "42fb146e-2e32-473f-86ba-3d3623042339",
+    "sender": "bot",
+    "text": "Vale, partiendo de eso, ¿qué pasaría si probáramos un enfoque diferente?"
   }
 ]

@@ -10,7 +10,6 @@ import {ChatConfigSchema, chatConfigSchema} from './schemas';
 import crypto from 'crypto';
 import { simulatedResponses } from './simulated-responses';
 import { simulatedResponsesEs } from './simulated-responses-es';
-import { generateResponse } from '@/ai/flows/chat-flow';
 
 const dataDir = path.join(process.cwd(), 'src', 'data', 'chats');
 const historyDir = path.join(process.cwd(), 'src', 'data', 'history');
@@ -172,6 +171,11 @@ export async function getChatHistory(chatId: string): Promise<ChatMessage[]> {
   }
 }
 
+export async function getMessageCount(chatId: string): Promise<number> {
+  const history = await getChatHistory(chatId);
+  return history.filter(m => m.sender === 'user').length;
+}
+
 export async function saveChatHistory(chatId: string, messages: ChatMessage[]) {
   await ensureDir(historyDir);
   const filePath = path.join(historyDir, `${chatId}.json`);
@@ -207,9 +211,6 @@ export async function streamAiResponse(
     sender: 'bot',
     text: responseText,
   };
-
-  const updatedHistory = [...currentMessages, newBotMessage];
-  await saveChatHistory(chatId, updatedHistory);
 
   return newBotMessage;
 }

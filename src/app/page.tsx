@@ -1,4 +1,4 @@
-import { getChats } from "@/lib/actions";
+import { getChats, getMessageCount } from "@/lib/actions";
 import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -9,6 +9,12 @@ import { DesertIcon } from "@/components/desert-icon";
 
 export default async function Home() {
   const chats = await getChats();
+  const chatsWithHistory = await Promise.all(
+    chats.map(async chat => {
+      const messageCount = await getMessageCount(chat.id);
+      return { ...chat, messageCount };
+    })
+  );
 
   return (
     <div className="flex flex-col w-full">
@@ -24,9 +30,9 @@ export default async function Home() {
           </Button>
         </div>
 
-        {chats.length > 0 ? (
+        {chatsWithHistory.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {chats.map((chat, index) => (
+            {chatsWithHistory.map((chat, index) => (
               <ChatCard key={chat.id} chat={chat} index={index} />
             ))}
           </div>

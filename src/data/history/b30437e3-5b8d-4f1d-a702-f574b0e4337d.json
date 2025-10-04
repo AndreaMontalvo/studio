@@ -1,0 +1,17 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "holi"
+  },
+  {
+    "id": "11d3d7d4-c3b4-4bab-bb46-2ade9f55f1cf",
+    "sender": "user",
+    "text": "aaaa"
+  },
+  {
+    "id": "e98dba5a-5f0a-4c8f-97c2-067ab414de99",
+    "sender": "bot",
+    "text": "Ese es un punto muy interesante. ¿Podrías dar más detalles?"
+  }
+]

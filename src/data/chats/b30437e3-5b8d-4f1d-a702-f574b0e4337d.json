@@ -1,0 +1,13 @@
+{
+  "id": "b30437e3-5b8d-4f1d-a702-f574b0e4337d",
+  "name": "Back button",
+  "persistentPrompt": "holi",
+  "welcomeMessage": "holi",
+  "finalMessage": "adios",
+  "waitingMessage": "espera",
+  "messageLimit": 9,
+  "characterLimit": 280,
+  "animationSpeed": 50,
+  "language": "es",
+  "createdAt": "2025-10-04T23:23:28.257Z"
+}

@@ -10,6 +10,7 @@ import {ChatConfigSchema, chatConfigSchema} from './schemas';
 import crypto from 'crypto';
 import { simulatedResponses } from './simulated-responses';
 import { simulatedResponsesEs } from './simulated-responses-es';
+import { generateResponse } from '@/ai/flows/chat-flow';
 
 const dataDir = path.join(process.cwd(), 'src', 'data', 'chats');
 const historyDir = path.join(process.cwd(), 'src', 'data', 'history');
@@ -171,7 +172,7 @@ export async function getChatHistory(chatId: string): Promise<ChatMessage[]> {
   }
 }
 
-async function saveChatHistory(chatId: string, messages: ChatMessage[]) {
+export async function saveChatHistory(chatId: string, messages: ChatMessage[]) {
   await ensureDir(historyDir);
   const filePath = path.join(historyDir, `${chatId}.json`);
   try {

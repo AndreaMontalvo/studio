@@ -11,7 +11,9 @@ import {ScrollArea} from '@/components/ui/scroll-area';
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {TypingAnimation} from './typing-animation';
 import Link from 'next/link';
-import {streamAiResponse} from '@/lib/actions';
+import { saveChatHistory } from '@/lib/actions';
+import { simulatedResponses } from '@/lib/simulated-responses';
+import { simulatedResponsesEs } from '@/lib/simulated-responses-es';
 
 const translations = {
   en: {
@@ -77,6 +79,8 @@ export function ChatInterface({
     const newMessages = [...messages, newUserMessage];
     setMessages(newMessages);
     setUserInput('');
+    saveChatHistory(chatConfig.id, newMessages);
+
 
     startTransition(async () => {
       setIsBotTyping(true);
@@ -88,7 +92,14 @@ export function ChatInterface({
       );
       await new Promise(resolve => setTimeout(resolve, typingDuration));
 
-      const botResponse = await streamAiResponse(chatConfig.id, newMessages);
+      const responses = chatConfig.language === 'es' ? simulatedResponsesEs : simulatedResponses;
+      const responseText = responses[Math.floor(Math.random() * responses.length)];
+
+      const botResponse: ChatMessage = {
+          id: crypto.randomUUID(),
+          sender: 'bot',
+          text: responseText,
+      };
       
       setIsBotTyping(false);
 
@@ -100,6 +111,8 @@ export function ChatInterface({
           ...prev,
           {id: botMessageId, sender: 'bot', text: ''},
         ]);
+        saveChatHistory(chatConfig.id, [...newMessages, botResponse]);
+
 
         let currentWordIndex = 0;
         const typeWord = () => {
@@ -124,10 +137,12 @@ export function ChatInterface({
 
             const userMessagesCount = newMessages.filter(m => m.sender === 'user').length;
             if (userMessagesCount >= chatConfig.messageLimit) {
+              const finalMessage = {id: crypto.randomUUID(), sender: 'bot' as const, text: chatConfig.finalMessage};
               setMessages(prev => [
                 ...prev,
-                {id: crypto.randomUUID(), sender: 'bot', text: chatConfig.finalMessage},
+                finalMessage,
               ]);
+              saveChatHistory(chatConfig.id, [...newMessages, botResponse, finalMessage]);
             }
           }
         };
@@ -139,7 +154,7 @@ export function ChatInterface({
   return (
     <div className="flex flex-col h-full max-h-[90dvh] w-full max-w-2xl bg-card rounded-lg border shadow-2xl">
       <div className="p-4 border-b flex items-center gap-4">
-        <Button asChild variant="ghost" size="icon" className="md:hidden">
+        <Button asChild variant="ghost" size="icon">
             <Link href="/">
                 <ArrowLeft />
                 <span className="sr-only">Back to chat list</span>

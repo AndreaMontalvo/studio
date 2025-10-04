@@ -42,7 +42,7 @@ export function ChatCard({ chat, index }: ChatCardProps) {
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 relative">
       <CardHeader>
         <div className="flex items-start justify-between">
-          <div className="flex-1">
+          <div className="flex-1 overflow-hidden">
             <CardTitle className="font-headline truncate" title={chat.name}>{chat.name}</CardTitle>
             <CardDescription>
               Created on {new Date(chat.createdAt).toLocaleDateString()}

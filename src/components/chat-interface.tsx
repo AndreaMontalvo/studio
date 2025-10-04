@@ -20,6 +20,17 @@ interface ChatMessage {
     text: string;
 }
 
+const translations = {
+    en: {
+        conversationEnded: "Conversation has ended.",
+        returnToChatList: "Return to Chat List",
+    },
+    es: {
+        conversationEnded: "La conversación ha terminado.",
+        returnToChatList: "Volver a la lista de chats",
+    }
+} as const;
+
 export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [userInput, setUserInput] = useState("");
@@ -27,6 +38,9 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
     const [messagesSent, setMessagesSent] = useState(0);
     const scrollAreaViewportRef = useRef<HTMLDivElement>(null);
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const lang = chatConfig.language === 'es' ? 'es' : 'en';
+    const t = translations[lang];
 
     useEffect(() => {
         if (chatConfig.welcomeMessage) {
@@ -136,11 +150,11 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
             <div className="p-4 border-t bg-background/50 rounded-b-lg">
               {isChatEnded ? (
                 <div className="flex flex-col items-center justify-center gap-2">
-                  <p className="text-sm text-muted-foreground">Conversation has ended.</p>
+                  <p className="text-sm text-muted-foreground">{t.conversationEnded}</p>
                   <Button asChild>
                     <Link href="/">
                       <Home className="mr-2" />
-                      Return to Chat List
+                      {t.returnToChatList}
                     </Link>
                   </Button>
                 </div>

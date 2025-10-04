@@ -1,5 +1,5 @@
 import { ChatInterface } from "@/components/chat-interface";
-import { getChatById } from "@/lib/actions";
+import { getChatById, getChatHistory } from "@/lib/actions";
 import { notFound } from "next/navigation";
 
 interface RunChatPageProps {
@@ -15,5 +15,7 @@ export default async function RunChatPage({ params }: RunChatPageProps) {
     notFound();
   }
 
-  return <ChatInterface chatConfig={chat} />;
+  const initialHistory = await getChatHistory(params.id);
+
+  return <ChatInterface chatConfig={chat} initialHistory={initialHistory} />;
 }

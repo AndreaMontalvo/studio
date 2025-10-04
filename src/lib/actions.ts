@@ -1,45 +1,50 @@
-"use server";
+'use server';
 
-import fs from "fs/promises";
-import path from "path";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { ChatConfig } from "./types";
-import { ChatConfigSchema, chatConfigSchema } from "./schemas";
-import crypto from "crypto";
+import fs from 'fs/promises';
+import path from 'path';
+import {revalidatePath} from 'next/cache';
+import {redirect} from 'next/navigation';
+import {ChatConfig, ChatMessage} from './types';
+import {ChatConfigSchema, chatConfigSchema} from './schemas';
+import crypto from 'crypto';
+import {generateResponse} from '@/ai/flows/chat-flow';
 
-const dataDir = path.join(process.cwd(), "src", "data", "chats");
+const dataDir = path.join(process.cwd(), 'src', 'data', 'chats');
+const historyDir = path.join(process.cwd(), 'src', 'data', 'history');
 
-async function ensureDir() {
-  await fs.mkdir(dataDir, { recursive: true });
+async function ensureDir(dirPath: string) {
+  await fs.mkdir(dirPath, {recursive: true});
 }
 
 export async function getChats(): Promise<ChatConfig[]> {
-  await ensureDir();
+  await ensureDir(dataDir);
   try {
     const files = await fs.readdir(dataDir);
-    const chatFiles = files.filter((file) => file.endsWith(".json"));
-    
+    const chatFiles = files.filter(file => file.endsWith('.json'));
+
     const chats = await Promise.all(
-      chatFiles.map(async (file) => {
+      chatFiles.map(async file => {
         const filePath = path.join(dataDir, file);
-        const content = await fs.readFile(filePath, "utf-8");
+        const content = await fs.readFile(filePath, 'utf-8');
         return JSON.parse(content) as ChatConfig;
       })
     );
 
-    return chats.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return chats.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
   } catch (error) {
-    console.error("Failed to get chats:", error);
+    console.error('Failed to get chats:', error);
     return [];
   }
 }
 
 export async function getChatById(id: string): Promise<ChatConfig | null> {
-  await ensureDir();
+  await ensureDir(dataDir);
   const filePath = path.join(dataDir, `${id}.json`);
   try {
-    const content = await fs.readFile(filePath, "utf-8");
+    const content = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(content) as ChatConfig;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
@@ -55,15 +60,18 @@ export async function saveChat(formData: ChatConfigSchema) {
 
   if (!validatedFields.success) {
     // This should be handled client-side, but as a fallback:
-    console.error("Form validation failed", validatedFields.error.flatten().fieldErrors);
+    console.error(
+      'Form validation failed',
+      validatedFields.error.flatten().fieldErrors
+    );
     return {
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
-  
-  await ensureDir();
 
-  let { id, ...data } = validatedFields.data;
+  await ensureDir(dataDir);
+
+  let {id, ...data} = validatedFields.data;
   let isNew = !id;
 
   if (isNew) {
@@ -73,45 +81,54 @@ export async function saveChat(formData: ChatConfigSchema) {
   const chatData: ChatConfig = {
     id: id!,
     ...data,
-    createdAt: isNew ? new Date().toISOString() : (await getChatById(id!))?.createdAt || new Date().toISOString(),
+    createdAt: isNew
+      ? new Date().toISOString()
+      : (await getChatById(id!))?.createdAt || new Date().toISOString(),
   };
 
   const filePath = path.join(dataDir, `${id}.json`);
 
   try {
-    await fs.writeFile(filePath, JSON.stringify(chatData, null, 2), "utf-8");
+    await fs.writeFile(filePath, JSON.stringify(chatData, null, 2), 'utf-8');
   } catch (error) {
     console.error(`Failed to save chat ${id}:`, error);
     // Here you could use the toast system for errors
-    return { message: "Failed to save chat." };
+    return {message: 'Failed to save chat.'};
   }
 
-  revalidatePath("/");
+  revalidatePath('/');
   if (isNew) {
-      revalidatePath("/chats/new");
+    revalidatePath('/chats/new');
   } else {
-      revalidatePath(`/chats/${id}/edit`);
+    revalidatePath(`/chats/${id}/edit`);
   }
   redirect(`/`);
 }
 
-
 export async function deleteChat(formData: FormData) {
-  const id = formData.get("id") as string;
+  const id = formData.get('id') as string;
   if (!id) return;
-  
+
   const filePath = path.join(dataDir, `${id}.json`);
   try {
     await fs.unlink(filePath);
+    // Also delete history
+    const historyPath = path.join(historyDir, `${id}.json`);
+    await fs.unlink(historyPath).catch(err => {
+      // Ignore if history file doesn't exist
+      if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw err;
+      }
+    });
   } catch (error) {
     console.error(`Failed to delete chat ${id}:`, error);
     // Handle error (e.g., show a toast)
   }
-  revalidatePath("/");
+  revalidatePath('/');
 }
 
 export async function duplicateChat(formData: FormData) {
-  const id = formData.get("id") as string;
+  const id = formData.get('id') as string;
   if (!id) return;
 
   const originalChat = await getChatById(id);
@@ -127,10 +144,81 @@ export async function duplicateChat(formData: FormData) {
 
   const filePath = path.join(dataDir, `${newId}.json`);
   try {
-    await fs.writeFile(filePath, JSON.stringify(newChat, null, 2), "utf-8");
+    await fs.writeFile(filePath, JSON.stringify(newChat, null, 2), 'utf-8');
   } catch (error) {
     console.error(`Failed to duplicate chat ${id}:`, error);
     // Handle error
   }
-  revalidatePath("/");
+  revalidatePath('/');
+}
+
+export async function getChatHistory(chatId: string): Promise<ChatMessage[]> {
+  await ensureDir(historyDir);
+  const filePath = path.join(historyDir, `${chatId}.json`);
+  try {
+    const content = await fs.readFile(filePath, 'utf-8');
+    const history = JSON.parse(content);
+    // Ensure it returns an array even if the file is empty or malformed
+    return Array.isArray(history) ? history : [];
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      return []; // No history yet, return empty array
+    }
+    console.error(`Failed to get history for chat ${chatId}:`, error);
+    return []; // Return empty array on other errors too
+  }
+}
+
+async function saveChatHistory(chatId: string, messages: ChatMessage[]) {
+  await ensureDir(historyDir);
+  const filePath = path.join(historyDir, `${chatId}.json`);
+  try {
+    await fs.writeFile(filePath, JSON.stringify(messages, null, 2), 'utf-8');
+  } catch (error) {
+    console.error(`Failed to save history for chat ${chatId}:`, error);
+  }
+}
+
+export async function getAiResponse(
+  chatConfig: ChatConfig,
+  history: ChatMessage[]
+) {
+  'use server';
+  try {
+    const response = await generateResponse({chatConfig, history});
+    return response.text;
+  } catch (e) {
+    console.error('Error getting AI response:', e);
+    return 'Sorry, I encountered an error.';
+  }
+}
+
+export async function streamAiResponse(
+  chatId: string,
+  currentMessages: ChatMessage[]
+) {
+  'use server';
+
+  const chatConfig = await getChatById(chatId);
+  if (!chatConfig) {
+    throw new Error('Chat configuration not found.');
+  }
+
+  // Filter out any potential empty messages or system messages if needed
+  const historyForAi = currentMessages.filter(
+    m => m.sender === 'user' || m.sender === 'bot'
+  );
+
+  const responseText = await getAiResponse(chatConfig, historyForAi);
+
+  const newBotMessage: ChatMessage = {
+    id: crypto.randomUUID(),
+    sender: 'bot',
+    text: responseText,
+  };
+
+  const updatedHistory = [...currentMessages, newBotMessage];
+  await saveChatHistory(chatId, updatedHistory);
+
+  return newBotMessage;
 }

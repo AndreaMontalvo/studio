@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -12,6 +13,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { TypingAnimation } from "./typing-animation";
 
 interface ChatMessage {
+    id: string;
     sender: "user" | "bot";
     text: string;
 }
@@ -22,10 +24,11 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
     const [isBotTyping, setIsBotTyping] = useState(false);
     const [messagesSent, setMessagesSent] = useState(0);
     const scrollAreaViewportRef = useRef<HTMLDivElement>(null);
+    const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (chatConfig.welcomeMessage) {
-            setMessages([{ sender: "bot", text: chatConfig.welcomeMessage }]);
+            setMessages([{ id: 'initial-welcome', sender: "bot", text: chatConfig.welcomeMessage }]);
         }
     }, [chatConfig.welcomeMessage]);
 
@@ -34,13 +37,13 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
             scrollAreaViewportRef.current.scrollTop = scrollAreaViewportRef.current.scrollHeight;
         }
     }, [messages, isBotTyping]);
-    
+
     const handleSendMessage = (e: React.FormEvent) => {
         e.preventDefault();
         const trimmedInput = userInput.trim();
         if (!trimmedInput || isBotTyping || messagesSent >= chatConfig.messageLimit) return;
 
-        const newUserMessage: ChatMessage = { sender: "user", text: trimmedInput };
+        const newUserMessage: ChatMessage = { id: crypto.randomUUID(), sender: "user", text: trimmedInput };
         setMessages((prev) => [...prev, newUserMessage]);
         setUserInput("");
         const newMessagesSent = messagesSent + 1;
@@ -48,26 +51,48 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
         
         setIsBotTyping(true);
 
-        if (newMessagesSent >= chatConfig.messageLimit) {
-            setTimeout(() => {
-                setIsBotTyping(false);
-                setMessages((prev) => [...prev, { sender: "bot", text: chatConfig.finalMessage }]);
-            }, 1500);
-            return;
-        }
+        const finalMessage = chatConfig.finalMessage;
+        const messageLimit = chatConfig.messageLimit;
 
+        // Show "thinking" indicator
         setTimeout(() => {
-            const botResponse = simulatedResponses[Math.floor(Math.random() * simulatedResponses.length)];
-            const typingDuration = botResponse.length * chatConfig.animationSpeed;
-            
-            setTimeout(() => {
+            if (newMessagesSent >= messageLimit) {
+                // If message limit is reached, show final message
                 setIsBotTyping(false);
-                setMessages((prev) => [...prev, { sender: "bot", text: botResponse }]);
-            }, Math.max(typingDuration, 500)); 
+                setMessages((prev) => [...prev, { id: crypto.randomUUID(), sender: "bot", text: finalMessage }]);
+                return;
+            }
 
-        }, 1000);
+            const botResponseText = simulatedResponses[Math.floor(Math.random() * simulatedResponses.length)];
+            const words = botResponseText.split(/\s+/);
+            const botMessageId = crypto.randomUUID();
+
+            // Add an empty message for the bot to start typing into
+            setMessages((prev) => [...prev, { id: botMessageId, sender: "bot", text: "" }]);
+            setIsBotTyping(false);
+            
+            let currentWordIndex = 0;
+            
+            function typeWord() {
+                if (currentWordIndex < words.length) {
+                    const nextWord = words[currentWordIndex];
+                    setMessages((prev) =>
+                        prev.map((msg) =>
+                            msg.id === botMessageId
+                                ? { ...msg, text: msg.text ? `${msg.text} ${nextWord}` : nextWord }
+                                : msg
+                        )
+                    );
+                    currentWordIndex++;
+                    typingTimeoutRef.current = setTimeout(typeWord, chatConfig.animationSpeed);
+                }
+            }
+            
+            typeWord();
+
+        }, 1000); // Initial "thinking" delay
     };
-    
+
     const isChatEnded = messagesSent >= chatConfig.messageLimit;
 
     return (
@@ -87,7 +112,7 @@ export function ChatInterface({ chatConfig }: { chatConfig: ChatConfig }) {
             <ScrollArea className="flex-1" viewportRef={scrollAreaViewportRef}>
                 <div className="p-4 space-y-6">
                     {messages.map((msg, index) => (
-                        <div key={index} className={cn("flex items-end gap-2", msg.sender === 'user' ? 'justify-end' : 'justify-start')}>
+                        <div key={msg.id} className={cn("flex items-end gap-2", msg.sender === 'user' ? 'justify-end' : 'justify-start')}>
                             {msg.sender === 'bot' && <Avatar className="h-8 w-8"><AvatarFallback>B</AvatarFallback></Avatar>}
                             <div className={cn("max-w-[80%] rounded-lg px-4 py-2 shadow-sm", msg.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
                                 <p className="text-sm break-words whitespace-pre-wrap">{msg.text}</p>

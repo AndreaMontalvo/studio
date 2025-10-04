@@ -9,11 +9,11 @@ import {Button} from '@/components/ui/button';
 import {Send, Home, ArrowLeft} from 'lucide-react';
 import {ScrollArea} from '@/components/ui/scroll-area';
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
-import {TypingAnimation} from './typing-animation';
 import Link from 'next/link';
 import { saveChatHistory } from '@/lib/actions';
 import { simulatedResponses } from '@/lib/simulated-responses';
 import { simulatedResponsesEs } from '@/lib/simulated-responses-es';
+import { TypingAnimation } from './typing-animation';
 
 const translations = {
   en: {
@@ -212,7 +212,8 @@ export function ChatInterface({
               <Avatar className="h-8 w-8">
                 <AvatarFallback>B</AvatarFallback>
               </Avatar>
-              <div className="bg-muted rounded-lg px-4 py-3 shadow-sm">
+              <div className="bg-muted rounded-lg px-4 py-3 shadow-sm flex items-center gap-2">
+                <p className="text-sm italic text-muted-foreground">{chatConfig.waitingMessage}</p>
                 <TypingAnimation />
               </div>
             </div>

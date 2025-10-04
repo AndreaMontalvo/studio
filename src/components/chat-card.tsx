@@ -47,7 +47,7 @@ export function ChatCard({ chat, index }: ChatCardProps) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 overflow-hidden">
             <CardTitle className="font-headline truncate" title={chat.name}>{chat.name}</CardTitle>
-            <CardDescription className="flex items-center gap-2 mt-1">
+            <CardDescription className="flex items-center gap-2 mt-2">
               {isCompleted ? (
                 <Badge variant="secondary">Completed</Badge>
               ) : (

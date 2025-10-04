@@ -80,46 +80,59 @@ export function ChatInterface({
 
     startTransition(async () => {
       setIsBotTyping(true);
-      const botResponse = await streamAiResponse(chatConfig.id, newMessages);
-      const words = botResponse.text.split(/\s+/);
-      const botMessageId = botResponse.id;
-
-      // Add an empty message for the bot to start typing into
-      setMessages(prev => [...prev, {id: botMessageId, sender: 'bot', text: ''}]);
-
-      let currentWordIndex = 0;
       
-      const typeWord = () => {
-        if (currentWordIndex < words.length) {
-          const nextWord = words[currentWordIndex];
-          setMessages(prev =>
-            prev.map(msg =>
-              msg.id === botMessageId
-                ? {...msg, text: msg.text ? `${msg.text} ${nextWord}` : nextWord}
-                : msg
-            )
-          );
-          currentWordIndex++;
-          setTimeout(typeWord, chatConfig.animationSpeed);
-        } else {
-          // After typing is done, update the history with the full message
-          setMessages(prev =>
-            prev.map(msg =>
-              msg.id === botMessageId ? {...msg, text: botResponse.text} : msg
-            )
-          );
-          setIsBotTyping(false);
+      // Simulate typing delay before getting the response
+      const typingDuration = Math.min(
+        trimmedInput.length * chatConfig.animationSpeed,
+        2000
+      );
+      await new Promise(resolve => setTimeout(resolve, typingDuration));
 
-          const userMessagesCount = newMessages.filter(m => m.sender === 'user').length;
-          if (userMessagesCount >= chatConfig.messageLimit) {
-            setMessages(prev => [
-              ...prev,
-              {id: crypto.randomUUID(), sender: 'bot', text: chatConfig.finalMessage},
-            ]);
+      const botResponse = await streamAiResponse(chatConfig.id, newMessages);
+      
+      setIsBotTyping(false);
+
+      if (botResponse) {
+        const words = botResponse.text.split(/\s+/);
+        const botMessageId = botResponse.id;
+
+        setMessages(prev => [
+          ...prev,
+          {id: botMessageId, sender: 'bot', text: ''},
+        ]);
+
+        let currentWordIndex = 0;
+        const typeWord = () => {
+          if (currentWordIndex < words.length) {
+            const nextWord = words[currentWordIndex];
+            setMessages(prev =>
+              prev.map(msg =>
+                msg.id === botMessageId
+                  ? {...msg, text: msg.text ? `${msg.text} ${nextWord}` : nextWord}
+                  : msg
+              )
+            );
+            currentWordIndex++;
+            setTimeout(typeWord, 50); 
+          } else {
+            // After typing is done, ensure the full message is set correctly
+             setMessages(prev =>
+                prev.map(msg =>
+                  msg.id === botMessageId ? {...msg, text: botResponse.text} : msg
+                )
+              );
+
+            const userMessagesCount = newMessages.filter(m => m.sender === 'user').length;
+            if (userMessagesCount >= chatConfig.messageLimit) {
+              setMessages(prev => [
+                ...prev,
+                {id: crypto.randomUUID(), sender: 'bot', text: chatConfig.finalMessage},
+              ]);
+            }
           }
-        }
+        };
+        setTimeout(typeWord, 50);
       }
-      setTimeout(typeWord, chatConfig.animationSpeed);
     });
   };
 

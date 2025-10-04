@@ -1,3 +1,4 @@
+
 'use server';
 
 import fs from 'fs/promises';
@@ -183,11 +184,19 @@ async function saveChatHistory(chatId: string, messages: ChatMessage[]) {
 export async function streamAiResponse(
   chatId: string,
   currentMessages: ChatMessage[]
-): Promise<ChatMessage> {
+): Promise<ChatMessage | null> {
   const chatConfig = await getChatById(chatId);
   if (!chatConfig) {
-    throw new Error('Chat configuration not found.');
+    console.error('Chat configuration not found.');
+    return {
+        id: crypto.randomUUID(),
+        sender: 'bot',
+        text: "Sorry, I can't find this chat's configuration.",
+    }
   }
+
+  // Save the user's message to history before generating a response.
+  await saveChatHistory(chatId, currentMessages);
 
   const responses = chatConfig.language === 'es' ? simulatedResponsesEs : simulatedResponses;
   const responseText = responses[Math.floor(Math.random() * responses.length)];

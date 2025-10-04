@@ -1,0 +1,27 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "Welcome! How can I help you today?"
+  },
+  {
+    "id": "feed1b01-4c63-4cc8-b540-a53ea9635c66",
+    "sender": "user",
+    "text": "sssss"
+  },
+  {
+    "id": "c224611c-371c-40f7-bbb6-6b103cfae844",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  },
+  {
+    "id": "03181e3d-add8-4e16-a32f-50dad1197b41",
+    "sender": "user",
+    "text": "ffgf"
+  },
+  {
+    "id": "900bf95c-f058-470e-ab5c-ced055f23917",
+    "sender": "bot",
+    "text": "Sorry, I encountered an error."
+  }
+]

@@ -7,7 +7,8 @@ import {redirect} from 'next/navigation';
 import {ChatConfig, ChatMessage} from './types';
 import {ChatConfigSchema, chatConfigSchema} from './schemas';
 import crypto from 'crypto';
-import {generateResponse} from '@/ai/flows/chat-flow';
+import { simulatedResponses } from './simulated-responses';
+import { simulatedResponsesEs } from './simulated-responses-es';
 
 const dataDir = path.join(process.cwd(), 'src', 'data', 'chats');
 const historyDir = path.join(process.cwd(), 'src', 'data', 'history');
@@ -179,30 +180,6 @@ async function saveChatHistory(chatId: string, messages: ChatMessage[]) {
   }
 }
 
-export async function getAiResponse(
-  chatConfig: ChatConfig,
-  history: ChatMessage[]
-) {
-  'use server';
-  try {
-    const historyForAi = history
-      .filter(m => m.sender === 'user' || m.sender === 'bot')
-      .map(m => ({sender: m.sender, text: m.text}));
-
-    const response = await generateResponse({
-      chatConfig: {
-        persistentPrompt: chatConfig.persistentPrompt,
-        language: chatConfig.language,
-      },
-      history: historyForAi,
-    });
-    return response.text;
-  } catch (e) {
-    console.error('Error getting AI response:', e);
-    return 'Sorry, I encountered an error.';
-  }
-}
-
 export async function streamAiResponse(
   chatId: string,
   currentMessages: ChatMessage[]
@@ -212,7 +189,8 @@ export async function streamAiResponse(
     throw new Error('Chat configuration not found.');
   }
 
-  const responseText = await getAiResponse(chatConfig, currentMessages);
+  const responses = chatConfig.language === 'es' ? simulatedResponsesEs : simulatedResponses;
+  const responseText = responses[Math.floor(Math.random() * responses.length)];
 
   const newBotMessage: ChatMessage = {
     id: crypto.randomUUID(),

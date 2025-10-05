@@ -53,5 +53,25 @@
     "id": "81af1c50-2e10-4d85-b3b5-f9fac077d0cb",
     "sender": "bot",
     "text": "That makes sense. It aligns with what I've seen in similar situations."
+  },
+  {
+    "id": "01278ffa-211c-445b-a974-1b3f4c145a79",
+    "sender": "user",
+    "text": "ddddd"
+  },
+  {
+    "id": "c518435d-bebe-4434-9afe-c1743f22e98f",
+    "sender": "bot",
+    "text": "I see. How does that affect your overall perspective?"
+  },
+  {
+    "id": "6c25afbd-e6c3-4bfd-8a84-28e19e642905",
+    "sender": "user",
+    "text": "ccccc"
+  },
+  {
+    "id": "ac74eb69-86f0-4639-a6d6-9d1e569fd573",
+    "sender": "bot",
+    "text": "Your insight is valuable. It helps clarify the situation."
   }
 ]

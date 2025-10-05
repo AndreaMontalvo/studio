@@ -85,6 +85,9 @@ export function ChatInterface({
     startTransition(async () => {
       setIsBotTyping(true);
       
+      // Ensure the waiting message is shown for at least 3 seconds.
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
       const responses = chatConfig.language === 'es' ? simulatedResponsesEs : simulatedResponses;
       const responseText = responses[Math.floor(Math.random() * responses.length)];
 
@@ -94,12 +97,8 @@ export function ChatInterface({
           text: responseText,
       };
       
-      // Ensure the waiting message is shown for at least 3 seconds.
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      setIsBotTyping(false);
-
       if (botResponse) {
+        setIsBotTyping(false);
         const words = botResponse.text.split(/\s+/);
         const botMessageId = botResponse.id;
 
@@ -131,7 +130,7 @@ export function ChatInterface({
                 )
               );
 
-            const userMessagesCount = newMessages.filter(m => m.sender === 'user').length;
+            const userMessagesCount = [...newMessages, botResponse].filter(m => m.sender === 'user').length;
             if (userMessagesCount >= chatConfig.messageLimit) {
               const finalMessage = {id: crypto.randomUUID(), sender: 'bot' as const, text: chatConfig.finalMessage};
               setMessages(prev => [
@@ -143,6 +142,8 @@ export function ChatInterface({
           }
         };
         setTimeout(typeWord, 50);
+      } else {
+        setIsBotTyping(false);
       }
     });
   };
@@ -192,9 +193,13 @@ export function ChatInterface({
                     : 'bg-muted'
                 )}
               >
-                <p className="text-sm break-words whitespace-pre-wrap">
-                  {msg.text}
-                </p>
+                {msg.text ? (
+                  <p className="text-sm break-words whitespace-pre-wrap">
+                    {msg.text}
+                  </p>
+                ) : (
+                  <TypingAnimation />
+                )}
               </div>
               {msg.sender === 'user' && (
                 <Avatar className="h-8 w-8">
@@ -208,9 +213,8 @@ export function ChatInterface({
               <Avatar className="h-8 w-8">
                 <AvatarFallback>B</AvatarFallback>
               </Avatar>
-              <div className="bg-muted rounded-lg px-4 py-3 shadow-sm flex items-center gap-2">
+              <div className="bg-muted rounded-lg px-4 py-3 shadow-sm">
                 <p className="text-sm italic text-muted-foreground">{chatConfig.waitingMessage}</p>
-                <TypingAnimation />
               </div>
             </div>
           )}

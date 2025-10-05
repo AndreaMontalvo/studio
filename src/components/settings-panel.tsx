@@ -38,6 +38,13 @@ const colorPresets = {
         '197 71% 73%', // Sky
         '96 78% 62%', // Lime
     ],
+    logo: [
+        '275 80% 60%', // Indigo
+        '0 0% 98%',   // White
+        '36 93% 53%', // Orange
+        '142 76% 36%', // Green
+        '330 80% 55%', // Rose
+    ]
 };
 
 // --- Helper Functions for Color Conversion ---
@@ -75,6 +82,7 @@ function hexToHsl(hex: string): string {
 
 
 function hslStringToHex(hsl: string): string {
+    if (!hsl) return '#000000';
     const [h, s, l] = hsl.split(' ').map(val => parseFloat(val.replace('%', '')));
     const sDecimal = s / 100;
     const lDecimal = l / 100;
@@ -234,6 +242,42 @@ export function SettingsPanel() {
                                                 className="w-10 h-10 p-0 border-none bg-transparent cursor-pointer"
                                             />
                                             <span className="text-sm">{hslStringToHex(colors.accent)}</span>
+                                        </div>
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Logo</Label>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {colorPresets.logo.map((color) => (
+                                    <button
+                                        key={color}
+                                        className={`w-8 h-8 rounded-full border-2 transition-all ${colors.logo === color ? 'border-ring scale-110' : 'border-transparent'
+                                            }`}
+                                        style={{ backgroundColor: `hsl(${color})` }}
+                                        onClick={() => setColors({ ...colors, logo: color })}
+                                    />
+                                ))}
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button 
+                                            className="w-8 h-8 rounded-full border-2 border-muted flex items-center justify-center"
+                                            style={{ backgroundColor: `hsl(${colors.logo})` }}
+                                            aria-label="Pick custom logo color"
+                                        >
+                                            <Palette className="w-4 h-4" />
+                                        </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-2">
+                                        <div className="flex items-center gap-2">
+                                             <input
+                                                type="color"
+                                                value={hslStringToHex(colors.logo)}
+                                                onChange={(e) => setColors({ ...colors, logo: hexToHsl(e.target.value) })}
+                                                className="w-10 h-10 p-0 border-none bg-transparent cursor-pointer"
+                                            />
+                                            <span className="text-sm">{hslStringToHex(colors.logo)}</span>
                                         </div>
                                     </PopoverContent>
                                 </Popover>

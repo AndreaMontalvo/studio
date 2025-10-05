@@ -11,6 +11,7 @@ interface AppState {
     colors: {
         primary: string;
         accent: string;
+        logo: string;
     };
     language: Language;
 }
@@ -18,7 +19,7 @@ interface AppState {
 interface AppContextType extends AppState {
     setAppName: (name: string) => void;
     setTheme: (theme: 'light' | 'dark') => void;
-    setColors: (colors: { primary: string; accent: string }) => void;
+    setColors: (colors: AppState['colors']) => void;
     setLanguage: (language: Language) => void;
     t: (key: TranslationKey, params?: Record<string, string>) => string;
 }
@@ -31,6 +32,7 @@ const defaultState: AppState = {
     colors: {
         primary: '275 80% 60%',
         accent: '180 80% 50%',
+        logo: '275 80% 60%',
     },
     language: 'en',
 };
@@ -41,7 +43,16 @@ function getInitialState(): AppState {
     }
     try {
         const item = window.localStorage.getItem('appSettings');
-        return item ? JSON.parse(item) : defaultState;
+        const storedState = item ? JSON.parse(item) : {};
+        // Merge stored state with default state to ensure all keys are present
+        return {
+            ...defaultState,
+            ...storedState,
+            colors: {
+                ...defaultState.colors,
+                ...(storedState.colors || {}),
+            }
+        };
     } catch (error) {
         console.warn('Error reading localStorage, using default state:', error);
         return defaultState;
@@ -65,13 +76,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         root.style.setProperty('--primary', state.colors.primary);
         root.style.setProperty('--accent', state.colors.accent);
         root.style.setProperty('--ring', state.colors.accent);
+        root.style.setProperty('--logo', state.colors.logo);
 
     }, [state]);
 
 
     const setAppName = (appName: string) => setState(s => ({ ...s, appName }));
     const setTheme = (theme: 'light' | 'dark') => setState(s => ({ ...s, theme }));
-    const setColors = (colors: { primary: string; accent: string }) => setState(s => ({ ...s, colors }));
+    const setColors = (colors: AppState['colors']) => setState(s => ({ ...s, colors }));
     const setLanguage = (language: Language) => setState(s => ({ ...s, language }));
     
     const t = useMemo(() => {

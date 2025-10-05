@@ -35,6 +35,7 @@ import Link from "next/link";
 import { deleteChat, duplicateChat } from "@/lib/actions";
 import { useTransition } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAppComponent } from "@/context/app-context";
 
 interface ChatCardProps {
   chat: ChatConfig & { messageCount: number };
@@ -42,6 +43,7 @@ interface ChatCardProps {
 }
 
 export function ChatCard({ chat, index }: ChatCardProps) {
+  const { t } = useAppComponent();
   const isCompleted = chat.messageCount >= chat.messageLimit;
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
@@ -54,13 +56,13 @@ export function ChatCard({ chat, index }: ChatCardProps) {
       if (result?.error) {
         toast({
           variant: "destructive",
-          title: "Could not duplicate chat",
+          title: t('couldNotDuplicate'),
           description: result.error,
         });
       } else {
         toast({
-          title: "Success!",
-          description: `Chat "${chat.name}" has been duplicated.`,
+          title: t('success'),
+          description: t('successDuplicate', { chatName: chat.name }),
         });
       }
     });
@@ -74,9 +76,9 @@ export function ChatCard({ chat, index }: ChatCardProps) {
             <CardTitle className="font-headline truncate" title={chat.name}>{chat.name}</CardTitle>
             <CardDescription className="flex items-center gap-2 mt-2">
               {isCompleted ? (
-                <Badge variant="secondary">Completed</Badge>
+                <Badge variant="secondary">{t('completed')}</Badge>
               ) : (
-                <Badge>In Progress</Badge>
+                <Badge>{t('inProgress')}</Badge>
               )}
                <span>{chat.messageCount} / {chat.messageLimit} msgs</span>
             </CardDescription>
@@ -92,7 +94,7 @@ export function ChatCard({ chat, index }: ChatCardProps) {
               <DropdownMenuItem asChild>
                 <Link href={`/chats/${chat.id}/edit`}>
                   <Edit className="mr-2" />
-                  <span>Edit</span>
+                  <span>{t('edit')}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -103,7 +105,7 @@ export function ChatCard({ chat, index }: ChatCardProps) {
                 disabled={isPending}
               >
                 <Copy className="mr-2" />
-                <span>{isPending ? "Duplicating..." : "Duplicate"}</span>
+                <span>{isPending ? t('duplicating') : t('duplicate')}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <AlertDialog>
@@ -113,14 +115,14 @@ export function ChatCard({ chat, index }: ChatCardProps) {
                       onSelect={(e) => e.preventDefault()}
                     >
                       <Trash2 className="mr-2" />
-                      <span>Delete</span>
+                      <span>{t('delete')}</span>
                     </DropdownMenuItem>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete your chat configuration.
+                      {t('confirmDeleteDesc')}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -133,7 +135,7 @@ export function ChatCard({ chat, index }: ChatCardProps) {
                       }}
                       variant="destructive"
                     >
-                      Delete
+                      {t('delete')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -149,7 +151,7 @@ export function ChatCard({ chat, index }: ChatCardProps) {
         <Button asChild className="w-full">
           <Link href={`/chats/${chat.id}/run`} target="_blank" rel="noopener noreferrer">
             <Bot className="mr-2" />
-            Run Chat
+            {t('runChat')}
           </Link>
         </Button>
       </CardFooter>

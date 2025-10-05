@@ -8,13 +8,15 @@ import { SettingsPanel } from './settings-panel';
 import {
   Sheet,
   SheetContent,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from './ui/button';
 
 
 export function Header() {
-  const { appName } = useAppComponent();
+  const { appName, t } = useAppComponent();
   return (
     <header className="border-b bg-card sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -31,6 +33,9 @@ export function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent>
+            <SheetHeader>
+                <SheetTitle>{t('settings')}</SheetTitle>
+            </SheetHeader>
             <SettingsPanel />
           </SheetContent>
         </Sheet>

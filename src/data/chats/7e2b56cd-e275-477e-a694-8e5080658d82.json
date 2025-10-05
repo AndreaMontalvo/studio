@@ -1,0 +1,13 @@
+{
+  "id": "7e2b56cd-e275-477e-a694-8e5080658d82",
+  "name": "ssssssss",
+  "persistentPrompt": "You are a helpful and friendly assistant.",
+  "welcomeMessage": "Welcome! How can I help you today?",
+  "finalMessage": "Thank you for chatting. The conversation has now ended.",
+  "waitingMessage": "Please wait while I formulate a response...",
+  "messageLimit": 10,
+  "characterLimit": 280,
+  "animationSpeed": 50,
+  "language": "es",
+  "createdAt": "2025-10-05T00:36:05.560Z"
+}

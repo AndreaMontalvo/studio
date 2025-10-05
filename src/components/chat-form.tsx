@@ -42,9 +42,6 @@ interface ChatFormProps {
 const languages = [
     { value: "en", label: "English" },
     { value: "es", label: "Spanish" },
-    { value: "fr", label: "French" },
-    { value: "de", label: "German" },
-    { value: "ja", label: "Japanese" },
 ];
 
 export function ChatForm({ chat }: ChatFormProps) {

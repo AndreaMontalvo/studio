@@ -167,8 +167,8 @@ export function SettingsPanel() {
                         <CardTitle>{t('colorScheme')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <div>
-                            <Label className="mb-2 block">Primary</Label>
+                        <div className="space-y-2">
+                            <Label>Primary</Label>
                             <div className="flex flex-wrap items-center gap-2">
                                 {colorPresets.primary.map((color) => (
                                     <button
@@ -179,24 +179,32 @@ export function SettingsPanel() {
                                         onClick={() => setColors({ ...colors, primary: color })}
                                     />
                                 ))}
-                                <div className='relative w-8 h-8'>
-                                    <input
-                                        type="color"
-                                        value={hslStringToHex(colors.primary)}
-                                        onChange={(e) => setColors({ ...colors, primary: hexToHsl(e.target.value) })}
-                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                    />
-                                    <div 
-                                        className="w-8 h-8 rounded-full border-2 border-muted"
-                                        style={{ backgroundColor: `hsl(${colors.primary})` }}
-                                    >
-                                        <Palette className="w-4 h-4 text-primary-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                                    </div>
-                                </div>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button 
+                                            className="w-8 h-8 rounded-full border-2 border-muted flex items-center justify-center"
+                                            style={{ backgroundColor: `hsl(${colors.primary})` }}
+                                            aria-label="Pick custom primary color"
+                                        >
+                                            <Palette className="w-4 h-4 text-primary-foreground" />
+                                        </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-2">
+                                        <div className="flex items-center gap-2">
+                                             <input
+                                                type="color"
+                                                value={hslStringToHex(colors.primary)}
+                                                onChange={(e) => setColors({ ...colors, primary: hexToHsl(e.target.value) })}
+                                                className="w-10 h-10 p-0 border-none bg-transparent cursor-pointer"
+                                            />
+                                            <span className="text-sm">{hslStringToHex(colors.primary)}</span>
+                                        </div>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                         </div>
-                        <div>
-                            <Label className="mb-2 block">Accent</Label>
+                         <div className="space-y-2">
+                            <Label>Accent</Label>
                             <div className="flex flex-wrap items-center gap-2">
                                 {colorPresets.accent.map((color) => (
                                     <button
@@ -207,20 +215,28 @@ export function SettingsPanel() {
                                         onClick={() => setColors({ ...colors, accent: color })}
                                     />
                                 ))}
-                                <div className='relative w-8 h-8'>
-                                    <input
-                                        type="color"
-                                        value={hslStringToHex(colors.accent)}
-                                        onChange={(e) => setColors({ ...colors, accent: hexToHsl(e.target.value) })}
-                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                    />
-                                    <div 
-                                        className="w-8 h-8 rounded-full border-2 border-muted"
-                                        style={{ backgroundColor: `hsl(${colors.accent})` }}
-                                    >
-                                        <Palette className="w-4 h-4 text-accent-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                                    </div>
-                                </div>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button 
+                                            className="w-8 h-8 rounded-full border-2 border-muted flex items-center justify-center"
+                                            style={{ backgroundColor: `hsl(${colors.accent})` }}
+                                            aria-label="Pick custom accent color"
+                                        >
+                                            <Palette className="w-4 h-4 text-accent-foreground" />
+                                        </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-2">
+                                        <div className="flex items-center gap-2">
+                                             <input
+                                                type="color"
+                                                value={hslStringToHex(colors.accent)}
+                                                onChange={(e) => setColors({ ...colors, accent: hexToHsl(e.target.value) })}
+                                                className="w-10 h-10 p-0 border-none bg-transparent cursor-pointer"
+                                            />
+                                            <span className="text-sm">{hslStringToHex(colors.accent)}</span>
+                                        </div>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                         </div>
                     </CardContent>

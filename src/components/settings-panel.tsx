@@ -44,6 +44,13 @@ const colorPresets = {
         '36 93% 53%', // Orange
         '142 76% 36%', // Green
         '330 80% 55%', // Rose
+    ],
+    bold: [
+        '0 0% 98%', // White
+        '240 10% 3.9%', // Black
+        '36 93% 53%', // Orange
+        '221 83% 53%', // Blue
+        '142 76% 36%', // Green
     ]
 };
 
@@ -278,6 +285,42 @@ export function SettingsPanel() {
                                                 className="w-10 h-10 p-0 border-none bg-transparent cursor-pointer"
                                             />
                                             <span className="text-sm">{hslStringToHex(colors.logo)}</span>
+                                        </div>
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Bold Text</Label>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {colorPresets.bold.map((color) => (
+                                    <button
+                                        key={color}
+                                        className={`w-8 h-8 rounded-full border-2 transition-all ${colors.bold === color ? 'border-ring scale-110' : 'border-transparent'
+                                            }`}
+                                        style={{ backgroundColor: `hsl(${color})` }}
+                                        onClick={() => setColors({ ...colors, bold: color })}
+                                    />
+                                ))}
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button 
+                                            className="w-8 h-8 rounded-full border-2 border-muted flex items-center justify-center"
+                                            style={{ backgroundColor: `hsl(${colors.bold})` }}
+                                            aria-label="Pick custom bold text color"
+                                        >
+                                            <Palette className="w-4 h-4" />
+                                        </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-2">
+                                        <div className="flex items-center gap-2">
+                                             <input
+                                                type="color"
+                                                value={hslStringToHex(colors.bold)}
+                                                onChange={(e) => setColors({ ...colors, bold: hexToHsl(e.target.value) })}
+                                                className="w-10 h-10 p-0 border-none bg-transparent cursor-pointer"
+                                            />
+                                            <span className="text-sm">{hslStringToHex(colors.bold)}</span>
                                         </div>
                                     </PopoverContent>
                                 </Popover>

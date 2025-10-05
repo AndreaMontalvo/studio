@@ -12,6 +12,7 @@ interface AppState {
         primary: string;
         accent: string;
         logo: string;
+        bold: string;
     };
     language: Language;
 }
@@ -33,6 +34,7 @@ const defaultState: AppState = {
         primary: '275 80% 60%',
         accent: '180 80% 50%',
         logo: '275 80% 60%',
+        bold: '0 0% 98%', // Default for dark theme (white)
     },
     language: 'en',
 };
@@ -77,12 +79,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         root.style.setProperty('--accent', state.colors.accent);
         root.style.setProperty('--ring', state.colors.accent);
         root.style.setProperty('--logo', state.colors.logo);
+        root.style.setProperty('--bold', state.colors.bold);
 
     }, [state]);
 
 
     const setAppName = (appName: string) => setState(s => ({ ...s, appName }));
-    const setTheme = (theme: 'light' | 'dark') => setState(s => ({ ...s, theme }));
+    const setTheme = (theme: 'light' | 'dark') => {
+        setState(s => {
+            const newTheme = theme;
+            // Adjust bold color for theme change if it's the default
+            const isDefaultBold = s.colors.bold === '0 0% 98%' || s.colors.bold === '240 10% 3.9%';
+            const newBoldColor = isDefaultBold 
+                ? (newTheme === 'dark' ? '0 0% 98%' : '240 10% 3.9%')
+                : s.colors.bold;
+
+            return { ...s, theme: newTheme, colors: { ...s.colors, bold: newBoldColor } };
+        });
+    };
     const setColors = (colors: AppState['colors']) => setState(s => ({ ...s, colors }));
     const setLanguage = (language: Language) => setState(s => ({ ...s, language }));
     

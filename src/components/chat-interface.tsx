@@ -85,13 +85,6 @@ export function ChatInterface({
     startTransition(async () => {
       setIsBotTyping(true);
       
-      // Simulate typing delay before getting the response
-      const typingDuration = Math.min(
-        trimmedInput.length * chatConfig.animationSpeed,
-        2000
-      );
-      await new Promise(resolve => setTimeout(resolve, typingDuration));
-
       const responses = chatConfig.language === 'es' ? simulatedResponsesEs : simulatedResponses;
       const responseText = responses[Math.floor(Math.random() * responses.length)];
 
@@ -100,6 +93,9 @@ export function ChatInterface({
           sender: 'bot',
           text: responseText,
       };
+      
+      // Ensure the waiting message is shown for at least 3 seconds.
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
       setIsBotTyping(false);
 

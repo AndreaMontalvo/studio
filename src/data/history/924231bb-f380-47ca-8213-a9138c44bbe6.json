@@ -1,0 +1,57 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "Welcome! How can I help you today?sss"
+  },
+  {
+    "id": "23d11553-dec4-4185-9c07-baedea0e862d",
+    "sender": "user",
+    "text": "aja"
+  },
+  {
+    "id": "b8659256-4c75-4214-82e9-9ba2a603a077",
+    "sender": "bot",
+    "text": "Okay, building on that, what if we tried a different approach?"
+  },
+  {
+    "id": "c43e00f0-d691-4fcd-ae58-716b82b4e048",
+    "sender": "user",
+    "text": "xxxx"
+  },
+  {
+    "id": "4b7969d1-7e8c-44b2-bd7c-d63757ce28b0",
+    "sender": "bot",
+    "text": "Your insight is valuable. It helps clarify the situation."
+  },
+  {
+    "id": "43c16e52-cdd4-4b13-aa6f-43ca216c53f0",
+    "sender": "user",
+    "text": "vvv"
+  },
+  {
+    "id": "0bdff306-9895-4d4b-9ddb-83e5dda127c2",
+    "sender": "bot",
+    "text": "That makes sense. It aligns with what I've seen in similar situations."
+  },
+  {
+    "id": "a8ebae6e-e93c-40ec-8c0a-e37b98cd290e",
+    "sender": "user",
+    "text": "ddd"
+  },
+  {
+    "id": "3836f8e8-264f-4ff5-97df-0b81518f931e",
+    "sender": "bot",
+    "text": "I'm not sure I follow completely. Can you rephrase that for me?"
+  },
+  {
+    "id": "2d980fb5-63c2-4c2a-983d-2871968313d1",
+    "sender": "user",
+    "text": "ffff"
+  },
+  {
+    "id": "81af1c50-2e10-4d85-b3b5-f9fac077d0cb",
+    "sender": "bot",
+    "text": "That makes sense. It aligns with what I've seen in similar situations."
+  }
+]

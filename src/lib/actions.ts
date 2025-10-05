@@ -12,7 +12,7 @@ import { simulatedResponses } from './simulated-responses';
 import { simulatedResponsesEs } from './simulated-responses-es';
 
 const dataDir = path.join(process.cwd(), 'src', 'data', 'chats');
-console.log(dataDir);
+console.log("Directory: ", dataDir);
 const historyDir = path.join(process.cwd(), 'src', 'data', 'history');
 const CHAT_LIMIT = 10;
 

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "Good morning"
+  },
+  {
+    "id": "09630b0e-7d64-471f-874b-312ab4355651",
+    "sender": "user",
+    "text": "aaaa"
+  },
+  {
+    "id": "06f631f1-43fb-48eb-b34c-8d2f00a76e12",
+    "sender": "bot",
+    "text": "I'm not sure I follow completely. Can you rephrase that for me?"
+  },
+  {
+    "id": "b4257876-2540-42fd-8bb6-b1c7bc3d8e66",
+    "sender": "user",
+    "text": "ssss"
+  },
+  {
+    "id": "653dc62e-781e-4ba8-a308-b04409d0d916",
+    "sender": "bot",
+    "text": "Vale, partiendo de eso, ¿qué pasaría si probáramos un enfoque diferente?"
+  },
+  {
+    "id": "37fdf3e5-456f-4fad-bf0b-a10672ed20ac",
+    "sender": "user",
+    "text": "gggg"
+  },
+  {
+    "id": "eee0bfb3-d139-4630-a6e0-4e8a6f019692",
+    "sender": "bot",
+    "text": "Gracias por compartir. Exploremos eso un poco más."
+  },
+  {
+    "id": "e26479f0-88b1-4b92-8dc7-cada9b3d6156",
+    "sender": "bot",
+    "text": "hasta luego"
+  }
+]

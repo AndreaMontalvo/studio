@@ -1,6 +1,6 @@
 {
-  "id": "7e2b56cd-e275-477e-a694-8e5080658d82",
-  "name": "ssssssss",
+  "id": "b98292f9-3a86-4fb6-9829-8860c6cbb454",
+  "name": "Chat 9",
   "persistentPrompt": "You are a helpful and friendly assistant.",
   "welcomeMessage": "Welcome! How can I help you today?",
   "finalMessage": "Thank you for chatting. The conversation has now ended.",
@@ -8,6 +8,6 @@
   "messageLimit": 10,
   "characterLimit": 280,
   "animationSpeed": 50,
-  "language": "es",
-  "createdAt": "2025-10-05T00:36:05.560Z"
+  "language": "en",
+  "createdAt": "2025-10-05T02:52:08.979Z"
 }

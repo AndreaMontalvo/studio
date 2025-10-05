@@ -1,13 +1,13 @@
 {
-  "id": "d6bf1fcf-c652-4d8a-8f32-a552af7abfa8",
-  "name": "as (Copy) (Copy)",
+  "id": "fc540c5e-6454-4750-8f53-ce61c1756585",
+  "name": "Chat 2",
   "persistentPrompt": "You are a helpful and friendly assistant.",
   "welcomeMessage": "Welcome! How can I help you today?",
   "finalMessage": "Thank you for chatting. The conversation has now ended.",
   "waitingMessage": "Please wait while I formulate a response...",
-  "messageLimit": 10,
+  "messageLimit": 2,
   "characterLimit": 280,
-  "animationSpeed": 50,
+  "animationSpeed": 0,
   "language": "en",
-  "createdAt": "2025-10-05T00:50:16.833Z"
+  "createdAt": "2025-10-05T02:50:30.620Z"
 }

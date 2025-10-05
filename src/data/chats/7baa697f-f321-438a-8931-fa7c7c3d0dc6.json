@@ -1,0 +1,13 @@
+{
+  "id": "7baa697f-f321-438a-8931-fa7c7c3d0dc6",
+  "name": "Chat 1",
+  "persistentPrompt": "You are a helpful and friendly assistant.",
+  "welcomeMessage": "Good morning",
+  "finalMessage": "hasta luego",
+  "waitingMessage": "estoy pensando...",
+  "messageLimit": 3,
+  "characterLimit": 280,
+  "animationSpeed": 0,
+  "language": "en",
+  "createdAt": "2025-10-05T02:48:28.501Z"
+}

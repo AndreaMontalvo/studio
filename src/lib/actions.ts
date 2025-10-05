@@ -62,11 +62,6 @@ export async function saveChat(formData: ChatConfigSchema) {
   const validatedFields = chatConfigSchema.safeParse(formData);
 
   if (!validatedFields.success) {
-    // This should be handled client-side, but as a fallback:
-    console.error(
-      'Form validation failed',
-      validatedFields.error.flatten().fieldErrors
-    );
     return {
       errors: validatedFields.error.flatten().fieldErrors,
     };
@@ -78,15 +73,13 @@ export async function saveChat(formData: ChatConfigSchema) {
   let isNew = !id;
 
   if (isNew) {
-    id = crypto.randomUUID();
-
     const chats = await getChats();
     if (chats.length >= CHAT_LIMIT) {
-      const oldestChat = chats[chats.length - 1];
-      const formData = new FormData();
-      formData.append('id', oldestChat.id);
-      await deleteChat(formData, false); // Don't revalidate yet
+      return {
+        error: 'Chat limit reached. Please delete a chat to create a new one.',
+      };
     }
+    id = crypto.randomUUID();
   }
 
   const chatData: ChatConfig = {
@@ -103,8 +96,7 @@ export async function saveChat(formData: ChatConfigSchema) {
     await fs.writeFile(filePath, JSON.stringify(chatData, null, 2), 'utf-8');
   } catch (error) {
     console.error(`Failed to save chat ${id}:`, error);
-    // Here you could use the toast system for errors
-    return {message: 'Failed to save chat.'};
+    return {error: 'Failed to save chat.'};
   }
 
   revalidatePath('/');
@@ -142,10 +134,17 @@ export async function deleteChat(formData: FormData, revalidate: boolean = true)
 
 export async function duplicateChat(formData: FormData) {
   const id = formData.get('id') as string;
-  if (!id) return;
+  if (!id) return { error: "No chat ID provided for duplication."};
+
+  const chats = await getChats();
+  if (chats.length >= CHAT_LIMIT) {
+    return {
+      error: 'Chat limit reached. Please delete a chat to duplicate one.',
+    };
+  }
 
   const originalChat = await getChatById(id);
-  if (!originalChat) return;
+  if (!originalChat) return { error: "Original chat not found."};
 
   const newId = crypto.randomUUID();
   const newChat: ChatConfig = {
@@ -155,22 +154,15 @@ export async function duplicateChat(formData: FormData) {
     createdAt: new Date().toISOString(),
   };
 
-  const chats = await getChats();
-  if (chats.length >= CHAT_LIMIT) {
-    const oldestChat = chats[chats.length - 1];
-    const deleteFormData = new FormData();
-    deleteFormData.append('id', oldestChat.id);
-    await deleteChat(deleteFormData, false);
-  }
-
   const filePath = path.join(dataDir, `${newId}.json`);
   try {
     await fs.writeFile(filePath, JSON.stringify(newChat, null, 2), 'utf-8');
   } catch (error) {
     console.error(`Failed to duplicate chat ${id}:`, error);
-    // Handle error
+    return { error: `Failed to duplicate chat.` };
   }
   revalidatePath('/');
+  return { success: true };
 }
 
 export async function getChatHistory(chatId: string): Promise<ChatMessage[]> {

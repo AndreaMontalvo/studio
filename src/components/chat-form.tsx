@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -66,8 +67,13 @@ export function ChatForm({ chat }: ChatFormProps) {
   function onSubmit(data: ChatConfigSchema) {
     startTransition(async () => {
       const result = await saveChat(data);
-      if (result?.errors) {
-        // This part is for server-side validation errors, though most should be caught client-side.
+      if (result?.error) {
+        toast({
+          variant: "destructive",
+          title: "Could not save chat",
+          description: result.error,
+        });
+      } else if (result?.errors) {
         toast({
             variant: "destructive",
             title: "Validation Error",

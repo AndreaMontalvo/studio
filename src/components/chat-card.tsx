@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { ChatConfig } from "@/lib/types";
@@ -32,6 +33,8 @@ import {
 import { MoreVertical, Bot, Edit, Copy, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { deleteChat, duplicateChat } from "@/lib/actions";
+import { useTransition } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ChatCardProps {
   chat: ChatConfig & { messageCount: number };
@@ -40,6 +43,28 @@ interface ChatCardProps {
 
 export function ChatCard({ chat, index }: ChatCardProps) {
   const isCompleted = chat.messageCount >= chat.messageLimit;
+  const [isPending, startTransition] = useTransition();
+  const { toast } = useToast();
+
+  const handleDuplicate = () => {
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.append("id", chat.id);
+      const result = await duplicateChat(formData);
+      if (result?.error) {
+        toast({
+          variant: "destructive",
+          title: "Could not duplicate chat",
+          description: result.error,
+        });
+      } else {
+        toast({
+          title: "Success!",
+          description: `Chat "${chat.name}" has been duplicated.`,
+        });
+      }
+    });
+  };
 
   return (
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 relative">
@@ -73,13 +98,12 @@ export function ChatCard({ chat, index }: ChatCardProps) {
               <DropdownMenuItem
                 onSelect={(e) => {
                   e.preventDefault();
-                  const formData = new FormData();
-                  formData.append("id", chat.id);
-                  duplicateChat(formData);
+                  handleDuplicate();
                 }}
+                disabled={isPending}
               >
                 <Copy className="mr-2" />
-                <span>Duplicate</span>
+                <span>{isPending ? "Duplicating..." : "Duplicate"}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <AlertDialog>

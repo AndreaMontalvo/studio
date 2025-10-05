@@ -1,0 +1,13 @@
+{
+  "id": "216262c2-50b7-468f-b682-ba607506f3a0",
+  "name": "aaaaaaaaa",
+  "persistentPrompt": "ffff",
+  "welcomeMessage": "German",
+  "finalMessage": "over",
+  "waitingMessage": "german writing",
+  "messageLimit": 3,
+  "characterLimit": 280,
+  "animationSpeed": 0,
+  "language": "es",
+  "createdAt": "2025-10-05T00:16:37.340Z"
+}

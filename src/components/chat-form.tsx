@@ -32,6 +32,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Save } from "lucide-react";
 import { useTransition } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAppComponent } from "@/context/app-context";
 
 interface ChatFormProps {
   chat?: ChatConfig | null;
@@ -48,6 +49,7 @@ const languages = [
 export function ChatForm({ chat }: ChatFormProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
+  const { t } = useAppComponent();
 
   const form = useForm<ChatConfigSchema>({
     resolver: zodResolver(chatConfigSchema),
@@ -70,19 +72,19 @@ export function ChatForm({ chat }: ChatFormProps) {
       if (result?.error) {
         toast({
           variant: "destructive",
-          title: "Could not save chat",
+          title: t('couldNotSave'),
           description: result.error,
         });
       } else if (result?.errors) {
         toast({
             variant: "destructive",
-            title: "Validation Error",
-            description: "Please check the form for errors.",
+            title: t('validationError'),
+            description: t('validationErrorDesc'),
         });
       } else {
         toast({
-          title: "Success!",
-          description: `Chat configuration "${data.name}" has been saved.`,
+          title: t('success'),
+          description: t('successSave', { chatName: data.name }),
         });
       }
     });
@@ -95,8 +97,8 @@ export function ChatForm({ chat }: ChatFormProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
-            <CardDescription>Define the core identity of your chat application.</CardDescription>
+            <CardTitle>{t('basicInfo')}</CardTitle>
+            <CardDescription>{t('basicInfoDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -104,9 +106,9 @@ export function ChatForm({ chat }: ChatFormProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Application Name</FormLabel>
+                  <FormLabel>{t('appName')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Customer Support Bot" {...field} />
+                    <Input placeholder={t('appNamePlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -117,8 +119,8 @@ export function ChatForm({ chat }: ChatFormProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Prompts & Messages</CardTitle>
-            <CardDescription>Set the conversational boundaries and messages.</CardDescription>
+            <CardTitle>{t('promptsAndMessages')}</CardTitle>
+            <CardDescription>{t('promptsAndMessagesDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <FormField
@@ -126,11 +128,11 @@ export function ChatForm({ chat }: ChatFormProps) {
               name="persistentPrompt"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Persistent Prompt</FormLabel>
+                  <FormLabel>{t('persistentPrompt')}</FormLabel>
                   <FormControl>
                     <Textarea placeholder="You are a helpful assistant..." {...field} rows={4} />
                   </FormControl>
-                  <FormDescription>This system-level prompt guides the AI's behavior throughout the conversation.</FormDescription>
+                  <FormDescription>{t('persistentPromptDesc')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -141,7 +143,7 @@ export function ChatForm({ chat }: ChatFormProps) {
                 name="welcomeMessage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Welcome Message</FormLabel>
+                    <FormLabel>{t('welcomeMessage')}</FormLabel>
                     <FormControl>
                       <Textarea placeholder="Welcome! How can I help you today?" {...field} />
                     </FormControl>
@@ -154,7 +156,7 @@ export function ChatForm({ chat }: ChatFormProps) {
                 name="waitingMessage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Waiting Message</FormLabel>
+                    <FormLabel>{t('waitingMessage')}</FormLabel>
                     <FormControl>
                       <Textarea placeholder="One moment please..." {...field} />
                     </FormControl>
@@ -168,11 +170,11 @@ export function ChatForm({ chat }: ChatFormProps) {
               name="finalMessage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Final Message</FormLabel>
+                  <FormLabel>{t('finalMessage')}</FormLabel>
                   <FormControl>
                     <Textarea placeholder="Thank you for chatting. The conversation has now ended." {...field} />
                   </FormControl>
-                  <FormDescription>Shown when the message limit is reached.</FormDescription>
+                  <FormDescription>{t('finalMessageDesc')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -182,8 +184,8 @@ export function ChatForm({ chat }: ChatFormProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Configuration</CardTitle>
-            <CardDescription>Fine-tune the chat behavior and limits.</CardDescription>
+            <CardTitle>{t('configuration')}</CardTitle>
+            <CardDescription>{t('configurationDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-x-6 gap-y-8">
             <FormField
@@ -191,11 +193,11 @@ export function ChatForm({ chat }: ChatFormProps) {
               name="messageLimit"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Message Limit</FormLabel>
+                  <FormLabel>{t('messageLimit')}</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} />
                   </FormControl>
-                  <FormDescription>Max number of user messages per session.</FormDescription>
+                  <FormDescription>{t('messageLimitDesc')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -205,11 +207,11 @@ export function ChatForm({ chat }: ChatFormProps) {
               name="characterLimit"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Character Limit</FormLabel>
+                  <FormLabel>{t('characterLimit')}</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} />
                   </FormControl>
-                  <FormDescription>Max characters per user message.</FormDescription>
+                  <FormDescription>{t('characterLimitDesc')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -219,7 +221,7 @@ export function ChatForm({ chat }: ChatFormProps) {
               name="animationSpeed"
               render={({ field }) => (
                 <FormItem className="md:col-span-2">
-                  <FormLabel>Animation Speed (ms/char)</FormLabel>
+                  <FormLabel>{t('typingSpeed')}</FormLabel>
                   <FormControl>
                     <div className="flex items-center gap-4">
                         <Slider
@@ -232,7 +234,7 @@ export function ChatForm({ chat }: ChatFormProps) {
                         <span className="text-sm font-medium w-12 text-center shrink-0">{field.value}ms</span>
                     </div>
                   </FormControl>
-                  <FormDescription>Delay per character for typing animation. 0 for instant.</FormDescription>
+                  <FormDescription>{t('typingSpeedDesc')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -242,11 +244,11 @@ export function ChatForm({ chat }: ChatFormProps) {
               name="language"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Language</FormLabel>
+                  <FormLabel>{t('language')}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a language" />
+                        <SelectValue placeholder={t('selectLanguage')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -267,7 +269,7 @@ export function ChatForm({ chat }: ChatFormProps) {
         <div className="flex justify-end sticky bottom-0 py-4 bg-background/80 backdrop-blur-sm">
             <Button type="submit" disabled={isPending} size="lg">
                 <Save className="mr-2" />
-                {isPending ? "Saving..." : "Save Configuration"}
+                {isPending ? t('saving') : t('saveConfiguration')}
             </Button>
         </div>
       </form>

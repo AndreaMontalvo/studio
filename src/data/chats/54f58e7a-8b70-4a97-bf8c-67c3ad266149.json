@@ -1,0 +1,13 @@
+{
+  "id": "54f58e7a-8b70-4a97-bf8c-67c3ad266149",
+  "name": "aaaa",
+  "persistentPrompt": "aaaa",
+  "welcomeMessage": "buenas",
+  "finalMessage": "se acabo",
+  "waitingMessage": "aaaa espera",
+  "messageLimit": 3,
+  "characterLimit": 280,
+  "animationSpeed": 0,
+  "language": "en",
+  "createdAt": "2025-10-05T00:39:42.963Z"
+}

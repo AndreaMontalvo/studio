@@ -1,0 +1,42 @@
+[
+  {
+    "id": "initial-welcome",
+    "sender": "bot",
+    "text": "buenas"
+  },
+  {
+    "id": "b4a61c5b-7f90-4eb4-9711-36bcef02b302",
+    "sender": "user",
+    "text": "sddd"
+  },
+  {
+    "id": "6b6eced1-c612-4ea9-83e0-1a9f0400563b",
+    "sender": "bot",
+    "text": "Ya veo. ¿Cómo afecta eso a tu perspectiva general?"
+  },
+  {
+    "id": "083439a0-5ce0-42d0-80bb-220243175adb",
+    "sender": "user",
+    "text": "ggggg"
+  },
+  {
+    "id": "615c7846-9f8d-4b15-8ab1-e3ad3d695f17",
+    "sender": "bot",
+    "text": "Vale, partiendo de eso, ¿qué pasaría si probáramos un enfoque diferente?"
+  },
+  {
+    "id": "9b0c0df4-cd6a-40a4-899f-8e5c6feaae2e",
+    "sender": "user",
+    "text": "ddddddh"
+  },
+  {
+    "id": "4d448e35-8a57-4025-a4a6-b94a794b2353",
+    "sender": "bot",
+    "text": "Ya veo. ¿Cómo afecta eso a tu perspectiva general?"
+  },
+  {
+    "id": "294a535e-c6f5-41ee-81d3-f31e5d1a426a",
+    "sender": "bot",
+    "text": "se acabo"
+  }
+]

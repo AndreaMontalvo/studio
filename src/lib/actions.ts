@@ -92,6 +92,7 @@ export async function saveChat(formData: ChatConfigSchema) {
   };
 
   const filePath = path.join(dataDir, `${id}.json`);
+  console.log(filePath);
 
   try {
     await fs.writeFile(filePath, JSON.stringify(chatData, null, 2), 'utf-8');

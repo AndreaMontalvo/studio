@@ -9,7 +9,7 @@ import Link from "next/link";
 import { ChatCard } from "@/components/chat-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAppComponent } from "@/context/app-context";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ChatConfig } from "@/lib/types";
 
 type ChatWithHistory = ChatConfig & { messageCount: number };
@@ -23,19 +23,21 @@ export default function Home() {
     setIsClient(true);
   }, []);
 
+  const loadChats = useCallback(async () => {
+    const chatData = await getChats();
+    const chatsWithHistory = await Promise.all(
+      chatData.map(async chat => {
+        const messageCount = await getMessageCount(chat.id);
+        return { ...chat, messageCount };
+      })
+    );
+    setChats(chatsWithHistory);
+  }, []);
+
+
   useEffect(() => {
-    async function loadChats() {
-      const chatData = await getChats();
-      const chatsWithHistory = await Promise.all(
-        chatData.map(async chat => {
-          const messageCount = await getMessageCount(chat.id);
-          return { ...chat, messageCount };
-        })
-      );
-      setChats(chatsWithHistory);
-    }
     loadChats();
-  }, [t]);
+  }, [loadChats]);
 
 
   return (
@@ -55,7 +57,7 @@ export default function Home() {
         {chats.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {chats.map((chat, index) => (
-              <ChatCard key={chat.id} chat={chat} index={index} />
+              <ChatCard key={chat.id} chat={chat} index={index} onActionComplete={loadChats} />
             ))}
           </div>
         ) : (

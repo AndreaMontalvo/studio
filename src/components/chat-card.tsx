@@ -40,9 +40,10 @@ import { useAppComponent } from "@/context/app-context";
 interface ChatCardProps {
   chat: ChatConfig & { messageCount: number };
   index: number;
+  onActionComplete: () => void;
 }
 
-export function ChatCard({ chat, index }: ChatCardProps) {
+export function ChatCard({ chat, index, onActionComplete }: ChatCardProps) {
   const { t } = useAppComponent();
   const isCompleted = chat.messageCount >= chat.messageLimit;
   const [isPending, startTransition] = useTransition();
@@ -64,9 +65,19 @@ export function ChatCard({ chat, index }: ChatCardProps) {
           title: t('success'),
           description: t('successDuplicate', { chatName: chat.name }),
         });
+        onActionComplete();
       }
     });
   };
+
+  const handleDelete = () => {
+    startTransition(async () => {
+        const formData = new FormData();
+        formData.append("id", chat.id);
+        await deleteChat(formData);
+        onActionComplete();
+    });
+  }
 
   return (
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 relative">
@@ -128,12 +139,9 @@ export function ChatCard({ chat, index }: ChatCardProps) {
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        const formData = new FormData();
-                        formData.append("id", chat.id);
-                        deleteChat(formData);
-                      }}
+                      onClick={handleDelete}
                       variant="destructive"
+                      disabled={isPending}
                     >
                       {t('delete')}
                     </AlertDialogAction>

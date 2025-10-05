@@ -226,7 +226,7 @@ export function ChatForm({ chat }: ChatFormProps) {
                         <span className="text-sm font-medium w-12 text-center shrink-0">{field.value}ms</span>
                     </div>
                   </FormControl>
-                  <FormDescription>Delay per character for typing animation. Affects how long the "typing..." indicator shows.</FormDescription>
+                  <FormDescription>Delay per character for typing animation. 0 for instant.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

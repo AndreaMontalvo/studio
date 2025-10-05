@@ -73,5 +73,15 @@
     "id": "ac74eb69-86f0-4639-a6d6-9d1e569fd573",
     "sender": "bot",
     "text": "Your insight is valuable. It helps clarify the situation."
+  },
+  {
+    "id": "4775521f-cbc0-425c-a82d-afefdf1f68ec",
+    "sender": "user",
+    "text": "sssss"
+  },
+  {
+    "id": "ee98a910-2daa-4a5f-a9be-f0ba2b3e7718",
+    "sender": "bot",
+    "text": "Your insight is valuable. It helps clarify the situation."
   }
 ]

@@ -76,10 +76,18 @@ export function ChatInterface({
       sender: 'user',
       text: trimmedInput,
     };
-    const newMessages = [...messages, newUserMessage];
+    
+    const waitingMessage: ChatMessage = {
+      id: crypto.randomUUID(),
+      sender: 'bot',
+      text: chatConfig.waitingMessage,
+      isWaiting: true,
+    };
+
+    const newMessages = [...messages, newUserMessage, waitingMessage];
     setMessages(newMessages);
     setUserInput('');
-    saveChatHistory(chatConfig.id, newMessages);
+    saveChatHistory(chatConfig.id, [...messages, newUserMessage]);
 
 
     startTransition(async () => {
@@ -102,11 +110,12 @@ export function ChatInterface({
         const words = botResponse.text.split(/\s+/);
         const botMessageId = botResponse.id;
 
-        setMessages(prev => [
-          ...prev,
-          {id: botMessageId, sender: 'bot', text: ''},
-        ]);
-        saveChatHistory(chatConfig.id, [...newMessages, botResponse]);
+        // Replace waiting message with an empty one for the animation
+        setMessages(prev => {
+          const updatedMessages = prev.filter(m => !m.isWaiting);
+          return [...updatedMessages, {id: botMessageId, sender: 'bot', text: ''}];
+        });
+        saveChatHistory(chatConfig.id, [...messages, newUserMessage, botResponse]);
 
 
         let currentWordIndex = 0;
@@ -121,7 +130,7 @@ export function ChatInterface({
               )
             );
             currentWordIndex++;
-            setTimeout(typeWord, 50); 
+            setTimeout(typeWord, chatConfig.animationSpeed); 
           } else {
             // After typing is done, ensure the full message is set correctly
              setMessages(prev =>
@@ -130,20 +139,22 @@ export function ChatInterface({
                 )
               );
 
-            const userMessagesCount = [...newMessages, botResponse].filter(m => m.sender === 'user').length;
+            const finalMessages = [...messages, newUserMessage, botResponse];
+            const userMessagesCount = finalMessages.filter(m => m.sender === 'user').length;
             if (userMessagesCount >= chatConfig.messageLimit) {
               const finalMessage = {id: crypto.randomUUID(), sender: 'bot' as const, text: chatConfig.finalMessage};
               setMessages(prev => [
                 ...prev,
                 finalMessage,
               ]);
-              saveChatHistory(chatConfig.id, [...newMessages, botResponse, finalMessage]);
+              saveChatHistory(chatConfig.id, [...finalMessages, finalMessage]);
             }
           }
         };
-        setTimeout(typeWord, 50);
+        setTimeout(typeWord, chatConfig.animationSpeed);
       } else {
         setIsBotTyping(false);
+         setMessages(prev => prev.filter(m => !m.isWaiting));
       }
     });
   };
@@ -193,7 +204,9 @@ export function ChatInterface({
                     : 'bg-muted'
                 )}
               >
-                {msg.text ? (
+                {msg.isWaiting ? (
+                   <p className="text-sm italic text-muted-foreground">{msg.text}</p>
+                ) : msg.text ? (
                   <p className="text-sm break-words whitespace-pre-wrap">
                     {msg.text}
                   </p>
@@ -208,16 +221,6 @@ export function ChatInterface({
               )}
             </div>
           ))}
-          {isBotTyping && (
-            <div className="flex items-end gap-2 justify-start">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback>B</AvatarFallback>
-              </Avatar>
-              <div className="bg-muted rounded-lg px-4 py-3 shadow-sm">
-                <p className="text-sm italic text-muted-foreground">{chatConfig.waitingMessage}</p>
-              </div>
-            </div>
-          )}
         </div>
       </ScrollArea>
       <div className="p-4 border-t bg-background/50 rounded-b-lg">

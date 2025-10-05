@@ -17,6 +17,11 @@ type ChatWithHistory = ChatConfig & { messageCount: number };
 export default function Home() {
   const { t } = useAppComponent();
   const [chats, setChats] = useState<ChatWithHistory[]>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     async function loadChats() {
@@ -38,11 +43,11 @@ export default function Home() {
       <Header />
       <main className="flex-1 container mx-auto py-8 px-4">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-headline font-bold">{t('myChats')}</h1>
+          <h1 className="text-3xl font-headline font-bold">{isClient ? t('myChats') : 'My Chats'}</h1>
           <Button asChild>
             <Link href="/chats/new">
               <Plus className="mr-2" />
-              {t('createNewChat')}
+              {isClient ? t('createNewChat') : 'Create New Chat'}
             </Link>
           </Button>
         </div>
@@ -57,12 +62,12 @@ export default function Home() {
           <Card className="w-full border-dashed">
             <CardContent className="flex flex-col items-center justify-center p-12 text-center">
               <MoreHorizontal className="w-24 h-24 text-muted-foreground mb-6" />
-              <h2 className="text-2xl font-headline font-semibold mb-2">{t('noChats')}</h2>
-              <p className="text-muted-foreground mb-6">{t('noChatsDesc')}</p>
+              <h2 className="text-2xl font-headline font-semibold mb-2">{isClient ? t('noChats') : 'No Chats Found'}</h2>
+              <p className="text-muted-foreground mb-6">{isClient ? t('noChatsDesc') : 'Get started by creating your first chat configuration.'}</p>
               <Button asChild size="lg">
                 <Link href="/chats/new">
                   <Plus className="mr-2" />
-                  {t('createFirstChat')}
+                  {isClient ? t('createFirstChat') : 'Create Your First Chat'}
                 </Link>
               </Button>
             </CardContent>

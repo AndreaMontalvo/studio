@@ -13,16 +13,23 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from './ui/button';
+import { useEffect, useState } from 'react';
 
 
 export function Header() {
   const { appName, t } = useAppComponent();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <header className="border-b bg-card sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 font-headline text-xl font-bold">
           <Bot className="h-7 w-7 text-primary" />
-          <span>{appName}</span>
+          <span>{isClient ? appName : 'ChatForge'}</span>
         </Link>
 
         <Sheet>
@@ -34,7 +41,7 @@ export function Header() {
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
-                <SheetTitle>{t('settings')}</SheetTitle>
+                <SheetTitle>{isClient ? t('settings') : 'Settings'}</SheetTitle>
             </SheetHeader>
             <SettingsPanel />
           </SheetContent>

@@ -29,10 +29,11 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Save } from "lucide-react";
+import { Save, X } from "lucide-react";
 import { useTransition } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAppComponent } from "@/context/app-context";
+import Link from "next/link";
 
 interface ChatFormProps {
   chat?: ChatConfig | null;
@@ -266,7 +267,13 @@ export function ChatForm({ chat }: ChatFormProps) {
           </CardContent>
         </Card>
         
-        <div className="flex justify-end sticky bottom-0 py-4 bg-background/80 backdrop-blur-sm">
+        <div className="flex justify-end gap-2 sticky bottom-0 py-4 bg-background/80 backdrop-blur-sm">
+            <Button type="button" variant="outline" size="lg" asChild>
+                <Link href="/">
+                    <X className="mr-2" />
+                    {t('cancel')}
+                </Link>
+            </Button>
             <Button type="submit" disabled={isPending} size="lg">
                 <Save className="mr-2" />
                 {isPending ? t('saving') : t('saveConfiguration')}

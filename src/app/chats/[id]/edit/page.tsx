@@ -19,9 +19,10 @@ export default function EditChatPage({ params }: EditChatPageProps) {
   const [chat, setChat] = useState<ChatConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const { t } = useAppComponent();
+  const chatId = params.id;
 
   useEffect(() => {
-    getChatById(params.id).then(chatData => {
+    getChatById(chatId).then(chatData => {
       if (!chatData) {
         notFound();
       } else {
@@ -29,7 +30,7 @@ export default function EditChatPage({ params }: EditChatPageProps) {
       }
       setLoading(false);
     });
-  }, [params.id]);
+  }, [chatId]);
 
 
   if (loading) {

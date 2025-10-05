@@ -71,11 +71,19 @@ export function ChatForm({ chat }: ChatFormProps) {
     startTransition(async () => {
       const result = await saveChat(data);
       if (result?.error) {
-        toast({
-          variant: "destructive",
-          title: t('couldNotSave'),
-          description: result.error,
-        });
+        if (result.error.includes('Chat limit reached')) {
+            toast({
+                variant: "destructive",
+                title: t('couldNotSave'),
+                description: t('chatLimitReached'),
+            });
+        } else {
+            toast({
+                variant: "destructive",
+                title: t('couldNotSave'),
+                description: result.error,
+            });
+        }
       } else if (result?.errors) {
         toast({
             variant: "destructive",

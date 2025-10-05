@@ -55,11 +55,19 @@ export function ChatCard({ chat, index, onActionComplete }: ChatCardProps) {
       formData.append("id", chat.id);
       const result = await duplicateChat(formData);
       if (result?.error) {
-        toast({
-          variant: "destructive",
-          title: t('couldNotDuplicate'),
-          description: result.error,
-        });
+        if (result.error.includes('Chat limit reached')) {
+            toast({
+                variant: "destructive",
+                title: t('couldNotDuplicate'),
+                description: t('chatLimitReachedDuplicate'),
+            });
+        } else {
+            toast({
+              variant: "destructive",
+              title: t('couldNotDuplicate'),
+              description: result.error,
+            });
+        }
       } else {
         toast({
           title: t('success'),

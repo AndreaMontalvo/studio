@@ -1,0 +1,13 @@
+{
+  "id": "8b76cba4-7740-4743-8ee6-53b96995a828",
+  "name": "as (Copy) (Copy) (Copy)",
+  "persistentPrompt": "You are a helpful and friendly assistant.",
+  "welcomeMessage": "Welcome! How can I help you today?",
+  "finalMessage": "Thank you for chatting. The conversation has now ended.",
+  "waitingMessage": "Please wait while I formulate a response...",
+  "messageLimit": 10,
+  "characterLimit": 280,
+  "animationSpeed": 50,
+  "language": "en",
+  "createdAt": "2025-10-05T00:50:28.189Z"
+}

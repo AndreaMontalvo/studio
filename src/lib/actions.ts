@@ -13,6 +13,7 @@ import { simulatedResponsesEs } from './simulated-responses-es';
 
 const dataDir = path.join(process.cwd(), 'src', 'data', 'chats');
 const historyDir = path.join(process.cwd(), 'src', 'data', 'history');
+const CHAT_LIMIT = 10;
 
 async function ensureDir(dirPath: string) {
   await fs.mkdir(dirPath, {recursive: true});
@@ -78,6 +79,14 @@ export async function saveChat(formData: ChatConfigSchema) {
 
   if (isNew) {
     id = crypto.randomUUID();
+
+    const chats = await getChats();
+    if (chats.length >= CHAT_LIMIT) {
+      const oldestChat = chats[chats.length - 1];
+      const formData = new FormData();
+      formData.append('id', oldestChat.id);
+      await deleteChat(formData, false); // Don't revalidate yet
+    }
   }
 
   const chatData: ChatConfig = {
@@ -107,7 +116,7 @@ export async function saveChat(formData: ChatConfigSchema) {
   redirect(`/`);
 }
 
-export async function deleteChat(formData: FormData) {
+export async function deleteChat(formData: FormData, revalidate: boolean = true) {
   const id = formData.get('id') as string;
   if (!id) return;
 
@@ -126,7 +135,9 @@ export async function deleteChat(formData: FormData) {
     console.error(`Failed to delete chat ${id}:`, error);
     // Handle error (e.g., show a toast)
   }
-  revalidatePath('/');
+  if (revalidate) {
+    revalidatePath('/');
+  }
 }
 
 export async function duplicateChat(formData: FormData) {
@@ -143,6 +154,14 @@ export async function duplicateChat(formData: FormData) {
     name: `${originalChat.name} (Copy)`,
     createdAt: new Date().toISOString(),
   };
+
+  const chats = await getChats();
+  if (chats.length >= CHAT_LIMIT) {
+    const oldestChat = chats[chats.length - 1];
+    const deleteFormData = new FormData();
+    deleteFormData.append('id', oldestChat.id);
+    await deleteChat(deleteFormData, false);
+  }
 
   const filePath = path.join(dataDir, `${newId}.json`);
   try {

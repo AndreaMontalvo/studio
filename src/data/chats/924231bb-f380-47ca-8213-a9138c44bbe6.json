@@ -4,7 +4,7 @@
   "persistentPrompt": "no",
   "welcomeMessage": "Welcome! How can I help you today?sss",
   "finalMessage": "Thank you for chatting. The conversation hassss now ended.",
-  "waitingMessage": "Please wait sswhile I formulate a response...",
+  "waitingMessage": "IT WOOOORKS",
   "messageLimit": 10,
   "characterLimit": 280,
   "animationSpeed": 200,
